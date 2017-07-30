@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wicker</string>
+    <string name="btn_reset">Reset</string>
+    <string name="btn_set_number">Vrijednost</string>
+    <string name="btn_step">Korak</string>
+    <string name="cancel">Odustani</string>
+    <string name="enter_num">Unesite vrijednost:</string>
+    <string name="enter_step">Unesite korak:</string>
+    <string name="overflow">Prevelik broj</string>
+    <string name="reset">Resetirane vrijednosti</string>
+    <string name="step">Korak</string>
+    <string name="save">Spremi</string>
+    <string name="add_symbol">+</string>
+    <string name="subtract_symbol">-</string>
+    <string name="zero">0</string>
+    <string name="date">Datum</string>
+    <string name="time">Vrijeme</string>
+    <string name="value">Vrijednost</string>
+    <string name="wicker_says">Wicker kaže:</string>
+    <string name="share">Dijeljenje preko</string>
+    <string name="not_supported">Akcija nije podržana</string>
+    <string name="data_copied">Kopirano u međuspremnik</string>
+    <string name="enter_name">Unesite naziv:</string>
+    <string name="please_enter_name">Naziv ne smije biti prazan</string>
+    <string name="success_saved">Uspješno pohranjeno</string>
+    <string name="all_data">Sve</string>
+    <string name="clear_all_data">Izbriši sve</string>
+    <string name="counter">Brojač</string>
+    <string name="created">Datum kreirano</string>
+    <string name="delete">Izbriši</string>
+    <string name="info">Detalji</string>
+    <string name="last_modified">Zadnje modificirano</string>
+    <string name="name">Naziv</string>
+    <string name="new_data">Novi</string>
+    <string name="note">Bilješke</string>
+    <string name="settings">Postavke</string>
+    <string name="search">Pretraži</string>
+    <string name="success_delete">Uspješno izbrisano</string>
+    <string name="unsuccess_delete">Neuspjelo brisanje</string>
+    <string name="save_changes_alert">Želite li pohraniti promjene?</string>
+    <string name="dont_save">Odbaci</string>
+    <string name="decrease">Smanji</string>
+    <string name="increase">Uvećaj</string>
+    <string name="error_database">Aplikacija prethodno zatvorena, pohranite ručno</string>
+    <string name="data_synced">Podaci ažurirani</string>
+    <string name="deleted_counter_single">brojač će biti izbrisan.</string>
+    <string name="deleted_counter_multiple">brojača će biti izbrisano.</string>
+    <string name="no">Ne</string>
+    <string name="yes">Da</string>
+    <string name="will_be_deleted">će biti izbrisan.</string>
+    <string name="no_counters_to_delete">Nema brojača</string>
+    <string name="random_welcome_text2">Jednostavan način brojenja onoga što Vam je važno</string>
+    <string name="welcome_to_wicker">Dobrodošli na Wicker!</string>
+    <string name="general">Općenito</string>
+    <string name="notif_description">Omogući brojenje izvan aplikacije</string>
+    <string name="notifications">Obavijesti</string>
+    <string name="home_screen">Početni zaslon</string>
+    <string name="random_welcome_text0_a">Vaš osobni brojač</string>
+    <string name="random_welcome_text1">Brojite trenutke</string>
+    <string name="order_by">Sortiraj</string>
+
+    <string-array name="spinner_order">
+        <item>Datum modificirano</item>
+        <item>Datum kreirano</item>
+        <item>Abecedno</item>
+        <item>Vrijednost</item>
+    </string-array>
+    <string name="counter_exists">Brojač s tim nazivom već postoji</string>
+    <string name="not_zero_alert">Ne smije biti nula</string>
+    <string name="positive_alert">Mora biti pozitivno</string>
+    <string name="enter_note">Unesite bilješku:</string>
+    <string name="error">Greška</string>
+    <string name="export_counter">Izvoz</string>
+    <string name="import_counter">Uvoz</string>
+    <string name="import_counter_alert">Uvezi brojač</string>
+    <string name="imported">Uvezeno</string>
+    <string name="exported_copy">Kopirajte kod</string>
+    <string name="export_copied">Kod kopiran</string>
+    <string name="random_welcome_text0_b">uz kojeg je brojenje jednostavno i zabavno!</string>
+    <string name="update_existing">Ažurirati postojeći brojač?</string>
+</resources>

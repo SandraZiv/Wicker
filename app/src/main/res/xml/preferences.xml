@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/general">
+
+        <SwitchPreference
+            android:key="pref_notification"
+            android:title="@string/notifications"
+            android:summary="@string/notif_description"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

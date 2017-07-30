@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">Wicker</string>
+    <string name="overflow">Overflow</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset value and step</string>
+    <string name="enter_num">Enter value:</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="enter_step">Enter step:</string>
+    <string name="step">Step</string>
+    <string name="btn_reset">Reset</string>
+    <string name="btn_set_number">Set value</string>
+    <string name="btn_step">Step</string>
+    <string name="save">Save</string>
+    <string name="add_symbol">+</string>
+    <string name="subtract_symbol">-</string>
+    <string name="zero">0</string>
+    <string name="wicker_says">Wicker says:</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="value">Value</string>
+    <string name="share">Share Via</string>
+    <string name="data_copied">Copied to clipboard</string>
+    <string name="not_supported">Not supported on your phone</string>
+    <string name="enter_name">Enter name:</string>
+    <string name="please_enter_name">Name can\'t be empty</string>
+    <string name="success_saved">Saved successfully</string>
+    <string name="all_data">All data</string>
+    <string name="name">Name</string>
+    <string name="created">Created</string>
+    <string name="note">Note</string>
+    <string name="last_modified">Last modified</string>
+    <string name="success_delete">Deleted successfully</string>
+    <string name="unsuccess_delete">Data doesn\'t exist</string>
+    <string name="counter">Counter</string>
+    <string name="info">Info</string>
+    <string name="search">Search</string>
+    <string name="new_data">New</string>
+    <string name="clear_all_data">Delete all data</string>
+    <string name="settings">Settings</string>
+    <string name="delete">Delete</string>
+    <string name="save_changes_alert">Do you want to save changes?</string>
+    <string name="dont_save">Don\'t Save</string>
+    <string name="increase">Increase</string>
+    <string name="decrease">Decrease</string>
+    <string name="error_database">Database closed, save manually</string>
+    <string name="data_synced">Data updated</string>
+    <string name="deleted_counter_single">counter will be deleted.</string>
+    <string name="deleted_counter_multiple">counters will be deleted.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="will_be_deleted">will be deleted.</string>
+    <string name="no_counters_to_delete">No counters to delete</string>
+    <string name="welcome_to_wicker">Welcome to Wicker!</string>
+    <string name="random_welcome_text2">Simple way to count important things</string>
+
+
+    <string name="general">General</string>
+    <string name="home_screen">Home screen</string>
+    <string name="notif_description">Enable counting outside application</string>
+    <string name="notifications">Notifications</string>
+    <string name="random_welcome_text1">Keep counting the moments</string>
+    <string name="random_welcome_text0_a">Your personal counter</string>
+    <string name="order_by">Order by</string>
+    <string name="counter_exists">Counter with that name already exists</string>
+    <string name="not_zero_alert">Must be different than zero</string>
+    <string name="positive_alert">Must be positive</string>
+    <string name="enter_note">Enter note:</string>
+    <string name="import_counter">Import</string>
+    <string name="import_counter_alert">Import counter</string>
+    <string name="export_counter">Export</string>
+    <string name="error">Error</string>
+    <string name="imported">Imported</string>
+    <string name="exported_copy">Copy exported counter code</string>
+    <string name="export_copied">Export code copied to clipboard</string>
+    <string name="update_existing">Update existing counter?</string>
+
+    <string-array name="spinner_order">
+        <item>Date Modified</item>
+        <item>Date Created</item>
+        <item>Alphabetical</item>
+        <item>Value</item>
+    </string-array>
+    <string name="random_welcome_text0_b">that makes counting easy and fun!</string>
+
+</resources>
