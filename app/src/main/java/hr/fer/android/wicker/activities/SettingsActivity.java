@@ -33,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(WickerConstant.PREF_NOTIFICATION) && !sharedPreferences.getBoolean(WickerConstant.PREF_NOTIFICATION, true)){
+        if (key.equals(WickerConstant.PREF_NOTIFICATION) && !sharedPreferences.getBoolean(WickerConstant.PREF_NOTIFICATION, true)) {
             //clear notifications
             CounterDatabase database = new CounterDatabase(SettingsActivity.this);
             for (Counter tmp : database.getDatabaseCounterListData())

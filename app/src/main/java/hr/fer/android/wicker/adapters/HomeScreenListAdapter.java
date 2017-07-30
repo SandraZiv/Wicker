@@ -43,16 +43,16 @@ public class HomeScreenListAdapter extends BaseAdapter {
 
         Counter counter = counterList.get(position);
 
-        TextView twTitle = (TextView)homeScreenRowView.findViewById(R.id.tw_home_screen_title);
-        TextView twValue = (TextView)homeScreenRowView.findViewById(R.id.tw_home_screen_value);
-        TextView twDate = (TextView)homeScreenRowView.findViewById(R.id.tw_home_screen_date);
+        TextView twTitle = (TextView) homeScreenRowView.findViewById(R.id.tw_home_screen_title);
+        TextView twValue = (TextView) homeScreenRowView.findViewById(R.id.tw_home_screen_value);
+        TextView twDate = (TextView) homeScreenRowView.findViewById(R.id.tw_home_screen_date);
 
         twTitle.setText(counter.getName());
         twValue.setText(context.getString(R.string.value) + ": " + counter.getValue());
         String date;
-        try{
+        try {
             date = counter.parseDateTime(Counter.CounterDateEnum.COUNTER_MODIFIED_DATE, false);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             date = "Unknown";
         }
         twDate.setText(date);

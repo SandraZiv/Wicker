@@ -41,15 +41,28 @@ public class InfoListAdapter extends BaseAdapter {
         View infoRowView = LayoutInflater.from(context).inflate(R.layout.info_list_layout, parent, false);
         String title, data;
         switch (position) {
-            case 0: title = context.getString(R.string.name);break;
-            case 1: title = context.getString(R.string.value);break;
-            case 2: title = context.getString(R.string.step);break;
-            case 3: title = context.getString(R.string.created);break;
-            case 4: title = context.getString(R.string.last_modified); break;
-            case 5: title = context.getString(R.string.note);break;
-            default: title = null;
+            case 0:
+                title = context.getString(R.string.name);
+                break;
+            case 1:
+                title = context.getString(R.string.value);
+                break;
+            case 2:
+                title = context.getString(R.string.step);
+                break;
+            case 3:
+                title = context.getString(R.string.created);
+                break;
+            case 4:
+                title = context.getString(R.string.last_modified);
+                break;
+            case 5:
+                title = context.getString(R.string.note);
+                break;
+            default:
+                title = null;
         }
-        if(counterDataList.get(position) == null || counterDataList.get(position).isEmpty())
+        if (counterDataList.get(position) == null || counterDataList.get(position).isEmpty())
             data = " - ";
         else
             data = counterDataList.get(position);
