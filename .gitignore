@@ -196,16 +196,16 @@ cmake-build-debug/
 .idea/sonarlint
 
 #Remove by myself 
-#.idea/
-#app/.gitignore
-#app/build.gradle
-#app/proguard-rules.pro
-#app/src/androidTest/
-#app/src/test/
-#gradle.properties
-#gradle/
-#gradlew
-#gradlew.bat
-#settings.gradle
+.idea/
+app/.gitignore
+app/build.gradle
+app/proguard-rules.pro
+app/src/androidTest/
+app/src/test/
+gradle.properties
+gradle/
+gradlew
+gradlew.bat
+settings.gradle
 
 # End of https://www.gitignore.io/api/intellij,androidstudio
