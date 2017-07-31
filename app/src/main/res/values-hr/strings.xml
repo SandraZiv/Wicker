@@ -79,4 +79,5 @@
     <string name="export_copied">Kod kopiran</string>
     <string name="random_welcome_text0_b">uz kojeg je brojenje jednostavno i zabavno!</string>
     <string name="update_existing">Ažurirati postojeći brojač?</string>
+    <string name="random_welcome_text3">Više od brojača</string>
 </resources>

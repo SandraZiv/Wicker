@@ -343,9 +343,10 @@ public class HomeScreenActivity extends AppCompatActivity {
             TextView emptyTextView1 = (TextView) findViewById(R.id.home_screen_tw_empty);
             String[] emptyText = {getString(R.string.random_welcome_text0_a) + '\n' + getString(R.string.random_welcome_text0_b),
                     getString(R.string.random_welcome_text1),
-                    getString(R.string.random_welcome_text2)};
+                    getString(R.string.random_welcome_text2),
+                    getString(R.string.random_welcome_text3)};
             Random rand = new Random();
-            emptyTextView1.setText(emptyText[rand.nextInt(3)]);
+            emptyTextView1.setText(emptyText[rand.nextInt(4)]);
             dataListView.setEmptyView(findViewById(R.id.home_screen_empty_view));
 
             dataListView.setAdapter(dataAdapter);

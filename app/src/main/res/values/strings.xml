@@ -81,5 +81,6 @@
         <item>Value</item>
     </string-array>
     <string name="random_welcome_text0_b">that makes counting easy and fun!</string>
+    <string name="random_welcome_text3">More than just a counter</string>
 
 </resources>
