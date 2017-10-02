@@ -651,8 +651,8 @@ public class MainActivity extends AppCompatActivity {
 
             final EditText inputNum = new EditText(MainActivity.this);
             inputNum.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            inputNum.setText(Double.toString(counterWorking.getValue()));
-            inputNum.setSelection(Double.toString(counterWorking.getValue()).length());
+            inputNum.setText(counterWorking.getValue() == WickerConstant.DEFAULT_VALUE ? "" : Double.toString(counterWorking.getValue()));
+            inputNum.setSelection(inputNum.getText().toString().length());
             builderSetNum.setView(inputNum);
 
             builderSetNum.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

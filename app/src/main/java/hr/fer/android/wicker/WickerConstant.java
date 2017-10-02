@@ -11,8 +11,8 @@ public class WickerConstant {
     public static final String SAVE = "SAVE";
 
     //from Counter
-    public final static int DEFAULT_VALUE = 0;
-    public final static int DEFAULT_STEP = 1;
+    public final static double DEFAULT_VALUE = 0.0;
+    public final static double DEFAULT_STEP = 1.0;
     public final static int ERROR_CODE = -1;
     public final static String COUNTER_BUNDLE_KEY = "counter";
     public final static String COUNTER_WORKING_STATE_KEY = "working";
