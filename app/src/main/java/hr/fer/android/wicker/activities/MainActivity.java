@@ -599,7 +599,7 @@ public class MainActivity extends AppCompatActivity {
             builderSetStep.setTitle(R.string.enter_step);
 
             final EditText inputNum = new EditText(MainActivity.this);
-            inputNum.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            inputNum.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             inputNum.setText(formatting.format(counterWorking.getStep()));
             inputNum.setSelection(inputNum.getText().toString().length());
             builderSetStep.setView(inputNum);
@@ -648,7 +648,7 @@ public class MainActivity extends AppCompatActivity {
             builderSetNum.setTitle(R.string.enter_num);
 
             final EditText inputNum = new EditText(MainActivity.this);
-            inputNum.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            inputNum.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             inputNum.setText(counterWorking.getValue() == WickerConstant.DEFAULT_VALUE ? "" : formatting.format(counterWorking.getValue()));
             inputNum.setSelection(inputNum.getText().toString().length());
             builderSetNum.setView(inputNum);
