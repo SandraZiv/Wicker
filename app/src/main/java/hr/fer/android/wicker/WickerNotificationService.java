@@ -9,6 +9,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 import hr.fer.android.wicker.activities.MainActivity;
 import hr.fer.android.wicker.db.CounterDatabase;
 import hr.fer.android.wicker.entity.Counter;
@@ -26,15 +28,15 @@ public class WickerNotificationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String action = intent.getAction();
         Counter counter = (Counter) intent.getExtras().getSerializable(WickerConstant.COUNTER_BUNDLE_KEY);
-        if(action==null)
+        if (action == null) {
             updateNotification(counter);
-        else if (action.equals(WickerConstant.INCREASE)) {
+        } else if (action.equals(WickerConstant.INCREASE)) {
             counter.increase();
             updateNotification(counter); //TODO overflow
         } else if (action.equals(WickerConstant.DECREASE)) {
             counter.decrease();
             updateNotification(counter);
-        } else{
+        } else {
             CounterDatabase db = new CounterDatabase(this);
             db.updateCounter(counter); //TODO
             updateNotification(counter);
@@ -46,7 +48,10 @@ public class WickerNotificationService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setAutoCancel(true);
         builder.setContentTitle(getString(R.string.app_name));
-        builder.setContentText(counter.getName() + ": " + counter.getValue());
+
+        DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
+        builder.setContentText(counter.getName() + ": " + formatting.format(counter.getValue()));
+
         builder.setSmallIcon(R.mipmap.ic_launcher);
 
         builder.setWhen(0);

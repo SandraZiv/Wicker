@@ -24,13 +24,13 @@ import hr.fer.android.wicker.entity.Counter;
 public class CounterDatabase implements Serializable {
 
     //creating names and indexes for table
-    public static final String KEY_ID = "ID"; //index
-    public static final String KEY_NAME_COLUMN = "COUNTER_NAME_COLUMN";
-    public static final String KEY_VALUE_COLUMN = "COUNTER_VALUE_COLUMN";
-    public static final String KEY_STEP_COLUMN = "COUNTER_STEP_COLUMN";
-    public static final String KEY_DATE_CREATED_COLUMN = "COUNTER_DATE_CREATED_COLUMN";
-    public static final String KEY_DATE_MODIFIED_COLUMN = "COUNTER_DATE_MODIFIED_COLUMN";
-    public static final String KEY_NOTE_COLUMN = "COUNTER_NOTE_COLUMN";
+    private static final String KEY_ID = "ID"; //index
+    private static final String KEY_NAME_COLUMN = "COUNTER_NAME_COLUMN";
+    private static final String KEY_VALUE_COLUMN = "COUNTER_VALUE_COLUMN";
+    private static final String KEY_STEP_COLUMN = "COUNTER_STEP_COLUMN";
+    private static final String KEY_DATE_CREATED_COLUMN = "COUNTER_DATE_CREATED_COLUMN";
+    private static final String KEY_DATE_MODIFIED_COLUMN = "COUNTER_DATE_MODIFIED_COLUMN";
+    private static final String KEY_NOTE_COLUMN = "COUNTER_NOTE_COLUMN";
 
     private CounterDatabaseHelper counterDatabaseHelper;
 
@@ -46,14 +46,10 @@ public class CounterDatabase implements Serializable {
         dbReadable = counterDatabaseHelper.getReadableDatabase();
     }
 
-    /**
-     * @return id of saved data
-     */
     public void closeDatabase() {
         counterDatabaseHelper.close();
     }
 
-    //add counter to database
 
     /**
      * @param counter value to add in database
@@ -114,6 +110,8 @@ public class CounterDatabase implements Serializable {
             return new Counter(cursor.getLong(0), cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3),
                     created.getTimeInMillis(), modified.getTimeInMillis(), cursor.getString(6));
         }
+
+        cursor.close();
         return null;
     }
 
@@ -136,6 +134,8 @@ public class CounterDatabase implements Serializable {
                 data.add(counter);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
         return data;
     }
 
@@ -179,7 +179,7 @@ public class CounterDatabase implements Serializable {
                         + KEY_NOTE_COLUMN + " text" + ");";
 
 
-        public CounterDatabaseHelper(Context context, String name,
+        private CounterDatabaseHelper(Context context, String name,
                                      SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);
         }

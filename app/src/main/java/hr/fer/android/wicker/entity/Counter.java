@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,13 +24,13 @@ public class Counter implements Serializable {
     private Long dateModified;
     private String note = "";
 
+    private DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
 
     public enum CounterDateEnum {
         COUNTER_CREATED_DATE(0),
         COUNTER_MODIFIED_DATE(1);
 
         private final int counterDateCode;
-
         private CounterDateEnum(int counterDateCode) {
             this.counterDateCode = counterDateCode;
         }
@@ -189,7 +190,7 @@ public class Counter implements Serializable {
     public String extractData(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(context.getString(R.string.wicker_says)).append("\n")
-                .append(this.name.trim().isEmpty() ? context.getString(R.string.value) : this.name).append(": ").append(this.value);
+                .append(this.name.trim().isEmpty() ? context.getString(R.string.value) : this.name).append(": ").append(formatting.format(this.value));
         if (!this.note.trim().isEmpty())
             stringBuilder.append("\n").append(context.getString(R.string.note)).append(": ").append(this.note);
         stringBuilder.append("\n").append(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(dateModified)));
@@ -200,14 +201,14 @@ public class Counter implements Serializable {
         String date;
         if (dateCode == CounterDateEnum.COUNTER_CREATED_DATE) {
             if (showTime)
-                date = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT).format(new Date(dateCreated));
+                date = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT).format(new Date(this.dateCreated));
             else
-                date = DateFormat.getDateInstance(DateFormat.FULL).format(new Date(dateCreated));
+                date = DateFormat.getDateInstance(DateFormat.FULL).format(new Date(this.dateCreated));
         } else {
             if (showTime)
-                date = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT).format(new Date(dateModified));
+                date = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT).format(new Date(this.dateModified));
             else
-                date = DateFormat.getDateInstance(DateFormat.FULL).format(new Date(dateModified));
+                date = DateFormat.getDateInstance(DateFormat.FULL).format(new Date(this.dateModified));
         }
         return date;
     }
@@ -219,12 +220,12 @@ public class Counter implements Serializable {
      */
     public List<String> getCounterDataList() {
         List<String> list = new ArrayList<>();
-        list.add(name);
-        list.add(Double.toString(value));
-        list.add(Double.toString(step));
+        list.add(this.name);
+        list.add(formatting.format(this.value));
+        list.add(formatting.format(this.step));
         list.add(parseDateTime(CounterDateEnum.COUNTER_CREATED_DATE, true));
         list.add(parseDateTime(CounterDateEnum.COUNTER_MODIFIED_DATE, true));
-        list.add(note);
+        list.add(this.note);
         return list;
     }
 }

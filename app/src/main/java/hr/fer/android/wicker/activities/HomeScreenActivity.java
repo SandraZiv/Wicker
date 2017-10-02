@@ -225,14 +225,14 @@ public class HomeScreenActivity extends AppCompatActivity {
                 String importText = inputImport.getText().toString();
                 StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
                 encryptor.setPassword(WickerConstant.ENCRYPTION_PASSWORD);
-                Pattern pattern = Pattern.compile("(.+|\\p{Punct}),(\\w+),(\\w+),(\\w+),(\\w+),(.*)");
+                Pattern pattern = Pattern.compile("(.+|\\p{Punct}),(\\w+\\.\\w+),(\\w+\\.\\w+),(\\w+),(\\w+),(.*)");
                 try {
                     final Matcher matcher = pattern.matcher(encryptor.decrypt(importText));
                     if (matcher.find()) {
                         final Counter counter = new Counter(null,
                                 matcher.group(1),
-                                Integer.parseInt(matcher.group(2)),
-                                Integer.parseInt(matcher.group(3)),
+                                Double.parseDouble(matcher.group(2)),
+                                Double.parseDouble(matcher.group(3)),
                                 Long.parseLong(matcher.group(4)),
                                 Long.parseLong(matcher.group(5)),
                                 matcher.group(6));

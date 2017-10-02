@@ -62,10 +62,11 @@ public class InfoListAdapter extends BaseAdapter {
             default:
                 title = null;
         }
-        if (counterDataList.get(position) == null || counterDataList.get(position).isEmpty())
+        if (counterDataList.get(position) == null || counterDataList.get(position).isEmpty()) {
             data = " - ";
-        else
+        } else {
             data = counterDataList.get(position);
+        }
         TextView twTitle = (TextView) infoRowView.findViewById(R.id.tw_list_title);
         twTitle.setText(title);
         TextView twData = (TextView) infoRowView.findViewById(R.id.tw_list_data);

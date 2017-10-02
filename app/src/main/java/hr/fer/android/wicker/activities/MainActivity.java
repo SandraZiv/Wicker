@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView lwInfo;
 
+    private DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
+
     public void setFragmentMainComponents(TextView name,
                                           TextView value,
                                           TextView step,
@@ -209,18 +211,14 @@ public class MainActivity extends AppCompatActivity {
      * Method to update twStep
      */
     private void updateOnStepChanged() {
-        DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
-        String newStep = formatting.format(counterWorking.getStep());
-        twStep.setText(getString(R.string.step) + ": " + newStep);
+        twStep.setText(getString(R.string.step) + ": " + formatting.format(counterWorking.getStep()));
     }
 
     /**
      * Method to update twValue
      */
     private void updateOnValueChanged() {
-        DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
-        String newValue = formatting.format(counterWorking.getValue());
-        twValue.setText(newValue);
+        twValue.setText(formatting.format(counterWorking.getValue()));
     }
 
     /**
@@ -602,8 +600,8 @@ public class MainActivity extends AppCompatActivity {
 
             final EditText inputNum = new EditText(MainActivity.this);
             inputNum.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            inputNum.setText(Double.toString(counterWorking.getStep()));
-            inputNum.setSelection(Double.toString(counterWorking.getStep()).length());
+            inputNum.setText(formatting.format(counterWorking.getStep()));
+            inputNum.setSelection(inputNum.getText().toString().length());
             builderSetStep.setView(inputNum);
 
             builderSetStep.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -616,11 +614,11 @@ public class MainActivity extends AppCompatActivity {
                         double newStep;
                         try {
                             newStep = Double.parseDouble(newNum);
-                            if (newStep < 0)
+                            if (newStep < 0) {
                                 Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
-                            else if (newStep == 0)
+                            } else if (newStep == 0) {
                                 Toast.makeText(MainActivity.this, R.string.not_zero_alert, Toast.LENGTH_SHORT).show();
-                            else {
+                            } else {
                                 counterWorking.setStep(newStep);
                                 updateOnStepChanged();
                                 updateInfo();
@@ -651,7 +649,7 @@ public class MainActivity extends AppCompatActivity {
 
             final EditText inputNum = new EditText(MainActivity.this);
             inputNum.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            inputNum.setText(counterWorking.getValue() == WickerConstant.DEFAULT_VALUE ? "" : Double.toString(counterWorking.getValue()));
+            inputNum.setText(counterWorking.getValue() == WickerConstant.DEFAULT_VALUE ? "" : formatting.format(counterWorking.getValue()));
             inputNum.setSelection(inputNum.getText().toString().length());
             builderSetNum.setView(inputNum);
 
@@ -665,9 +663,9 @@ public class MainActivity extends AppCompatActivity {
                         double newValue;
                         try {
                             newValue = Double.parseDouble(newNum);
-                            if (newValue < 0)
+                            if (newValue < 0) {
                                 Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
-                            else {
+                            } else {
                                 counterWorking.setValue(newValue);
                                 updateOnValueChanged();
                                 updateInfo();

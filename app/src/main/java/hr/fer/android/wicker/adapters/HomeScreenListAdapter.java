@@ -52,8 +52,7 @@ public class HomeScreenListAdapter extends BaseAdapter {
         twTitle.setText(counter.getName());
 
         DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
-        String value = formatting.format(counter.getValue());
-        twValue.setText(context.getString(R.string.value) + ": " + value);
+        twValue.setText(context.getString(R.string.value) + ": " + formatting.format(counter.getValue()));
 
         String date;
         try {
