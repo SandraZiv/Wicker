@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:weightSum="1"
+    android:layout_marginBottom="12dp"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="12dp">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/tw_home_screen_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="start"
         android:textAlignment="textStart"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
@@ -18,15 +19,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp">
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/tw_home_screen_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:layout_weight="0.5"
             android:textAlignment="textStart" />
 
@@ -34,9 +36,9 @@
             android:id="@+id/tw_home_screen_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:layout_weight="0.5"
             android:textAlignment="textEnd" />
-
     </LinearLayout>
 
 </LinearLayout>
