@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import hr.fer.android.wicker.R;
+import hr.fer.android.wicker.WickerConstant;
 import hr.fer.android.wicker.entity.Counter;
 
 
@@ -48,7 +50,11 @@ public class HomeScreenListAdapter extends BaseAdapter {
         TextView twDate = (TextView) homeScreenRowView.findViewById(R.id.tw_home_screen_date);
 
         twTitle.setText(counter.getName());
-        twValue.setText(context.getString(R.string.value) + ": " + counter.getValue());
+
+        DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
+        String value = formatting.format(counter.getValue());
+        twValue.setText(context.getString(R.string.value) + ": " + value);
+
         String date;
         try {
             date = counter.parseDateTime(Counter.CounterDateEnum.COUNTER_MODIFIED_DATE, false);

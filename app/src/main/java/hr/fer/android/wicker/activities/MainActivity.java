@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int retValue = counterWorking.increase();
+                double retValue = counterWorking.increase();
                 //in case of overflow
                 if (retValue == WickerConstant.ERROR_CODE) {
                     Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_LONG).show();
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         btnSubtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int retValue = counterWorking.decrease();
+                double retValue = counterWorking.decrease();
                 if (retValue < 0) {
                     Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
                 }
@@ -209,16 +209,16 @@ public class MainActivity extends AppCompatActivity {
      * Method to update twStep
      */
     private void updateOnStepChanged() {
-        DecimalFormat formatting = new DecimalFormat("#,###,###,###");
-        int number = counterWorking.getStep();
-        twStep.setText(getString(R.string.step) + ": " + formatting.format(number));
+        DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
+        String newStep = formatting.format(counterWorking.getStep());
+        twStep.setText(getString(R.string.step) + ": " + newStep);
     }
 
     /**
      * Method to update twValue
      */
     private void updateOnValueChanged() {
-        DecimalFormat formatting = new DecimalFormat("#,###,###,###");
+        DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
         String newValue = formatting.format(counterWorking.getValue());
         twValue.setText(newValue);
     }
@@ -601,9 +601,9 @@ public class MainActivity extends AppCompatActivity {
             builderSetStep.setTitle(R.string.enter_step);
 
             final EditText inputNum = new EditText(MainActivity.this);
-            inputNum.setInputType(InputType.TYPE_CLASS_NUMBER);
-            inputNum.setText(Integer.toString(counterWorking.getStep()));
-            inputNum.setSelection(Integer.toString(counterWorking.getStep()).length());
+            inputNum.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            inputNum.setText(Double.toString(counterWorking.getStep()));
+            inputNum.setSelection(Double.toString(counterWorking.getStep()).length());
             builderSetStep.setView(inputNum);
 
             builderSetStep.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -613,9 +613,9 @@ public class MainActivity extends AppCompatActivity {
                     if (newNum.isEmpty()) {
                         dialog.cancel();
                     } else {
-                        int newStep;
+                        double newStep;
                         try {
-                            newStep = Integer.parseInt(newNum);
+                            newStep = Double.parseDouble(newNum);
                             if (newStep < 0)
                                 Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
                             else if (newStep == 0)
@@ -650,9 +650,9 @@ public class MainActivity extends AppCompatActivity {
             builderSetNum.setTitle(R.string.enter_num);
 
             final EditText inputNum = new EditText(MainActivity.this);
-            inputNum.setInputType(InputType.TYPE_CLASS_NUMBER);
-            inputNum.setText(Integer.toString(counterWorking.getValue()));
-            inputNum.setSelection(Integer.toString(counterWorking.getValue()).length());
+            inputNum.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            inputNum.setText(Double.toString(counterWorking.getValue()));
+            inputNum.setSelection(Double.toString(counterWorking.getValue()).length());
             builderSetNum.setView(inputNum);
 
             builderSetNum.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -662,9 +662,9 @@ public class MainActivity extends AppCompatActivity {
                     if (newNum.isEmpty()) {
                         dialog.cancel();
                     } else {
-                        int newValue;
+                        double newValue;
                         try {
-                            newValue = Integer.parseInt(newNum);
+                            newValue = Double.parseDouble(newNum);
                             if (newValue < 0)
                                 Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
                             else {

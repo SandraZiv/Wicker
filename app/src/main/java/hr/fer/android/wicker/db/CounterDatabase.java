@@ -91,7 +91,7 @@ public class CounterDatabase implements Serializable {
         try {
             dbWritable.update(CounterDatabaseHelper.DATABASE_TABLE, updateValues, " id=" + counter.getId(), null);
             return counter.getId();
-        }catch (SQLiteConstraintException e){
+        } catch (SQLiteConstraintException e) {
             return WickerConstant.ERROR_CODE_LONG;
         }
 
@@ -104,14 +104,14 @@ public class CounterDatabase implements Serializable {
 
         Cursor cursor = dbReadable.rawQuery(sqlQuery, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             Calendar created = Calendar.getInstance();
             created.setTime(getDateFromString(cursor.getString(4)));
 
             Calendar modified = Calendar.getInstance();
             modified.setTime(getDateFromString(cursor.getString(5)));
 
-            return new Counter(cursor.getLong(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
+            return new Counter(cursor.getLong(0), cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3),
                     created.getTimeInMillis(), modified.getTimeInMillis(), cursor.getString(6));
         }
         return null;
@@ -131,7 +131,7 @@ public class CounterDatabase implements Serializable {
                 Calendar modified = Calendar.getInstance();
                 modified.setTime(getDateFromString(cursor.getString(5)));
 
-                Counter counter = new Counter(cursor.getLong(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
+                Counter counter = new Counter(cursor.getLong(0), cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3),
                         created.getTimeInMillis(), modified.getTimeInMillis(), cursor.getString(6));
                 data.add(counter);
             } while (cursor.moveToNext());
@@ -165,15 +165,15 @@ public class CounterDatabase implements Serializable {
         //string for database name, table and version
         private static final String DATABASE_NAME = "counter_database.db";
         private static final String DATABASE_TABLE = "counterTable";
-        private static final int DATABASE_VERSION = 7;
+        private static final int DATABASE_VERSION = 8;
 
         //SQL statement to create table
         private static final String CREATE_TABLE =
                 "create table " + DATABASE_TABLE + " ("
                         + KEY_ID + " integer primary key autoincrement,"
                         + KEY_NAME_COLUMN + " text not null unique,"
-                        + KEY_VALUE_COLUMN + " integer,"
-                        + KEY_STEP_COLUMN + " integer,"
+                        + KEY_VALUE_COLUMN + " numeric(15,2),"
+                        + KEY_STEP_COLUMN + " numeric(15,2),"
                         + KEY_DATE_CREATED_COLUMN + " timestamp,"
                         + KEY_DATE_MODIFIED_COLUMN + " timestamp,"
                         + KEY_NOTE_COLUMN + " text" + ");";
@@ -191,8 +191,10 @@ public class CounterDatabase implements Serializable {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("drop table " + DATABASE_TABLE);
+            db.execSQL("alter table " + DATABASE_TABLE + " rename to old");
             db.execSQL(CREATE_TABLE);
+            db.execSQL("insert into " + DATABASE_TABLE + " select * from old");
+            db.execSQL("drop table old");
         }
     }
 }

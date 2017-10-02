@@ -17,8 +17,8 @@ import hr.fer.android.wicker.WickerConstant;
 public class Counter implements Serializable {
     private Long id;
     private String name;
-    private int value;
-    private int step;
+    private double value;
+    private double step;
     private Long dateCreated;
     private Long dateModified;
     private String note = "";
@@ -53,7 +53,7 @@ public class Counter implements Serializable {
      * @param value counter value
      * @param step  counter step
      */
-    public Counter(Long id, String name, int value, int step, Long dateCreated, Long dateModified, String note) {
+    public Counter(Long id, String name, double value, double step, Long dateCreated, Long dateModified, String note) {
         this.id = id;
         this.name = name;
         if (step < 1)
@@ -86,22 +86,22 @@ public class Counter implements Serializable {
         this.dateModified = Calendar.getInstance().getTimeInMillis();
     }
 
-    public int getStep() {
+    public double getStep() {
         return step;
     }
 
     //overflow management done in MainActivity.java
-    public void setStep(int step) {
+    public void setStep(double step) {
         this.step = step;
         this.dateModified = Calendar.getInstance().getTimeInMillis();
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
     //overflow management done in MainActivity.java
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
         this.dateModified = Calendar.getInstance().getTimeInMillis();
     }
@@ -128,8 +128,7 @@ public class Counter implements Serializable {
     }
 
     //used when comparing working counter and counter in db to save changes
-
-
+    //does not include id, dateModified, dateCreated
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,8 +136,8 @@ public class Counter implements Serializable {
 
         Counter counter = (Counter) o;
 
-        if (step != counter.step) return false;
-        if (value != counter.value) return false;
+        if (Double.compare(counter.value, value) != 0) return false;
+        if (Double.compare(counter.step, step) != 0) return false;
         if (name != null ? !name.equals(counter.name) : counter.name != null) return false;
         return note != null ? note.equals(counter.note) : counter.note == null;
 
@@ -146,13 +145,16 @@ public class Counter implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + step;
-        result = 31 * result + value;
+        int result;
+        long temp;
+        result = name != null ? name.hashCode() : 0;
+        temp = Double.doubleToLongBits(value);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(step);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (note != null ? note.hashCode() : 0);
         return result;
     }
-
 
     @Override
     public String toString() {
@@ -160,18 +162,20 @@ public class Counter implements Serializable {
     }
 
     //in case of overflow returns -1 and values stays untouched
-    public int increase() {
-        if (Integer.MAX_VALUE - step < value)
+    public double increase() {
+        if (Double.MAX_VALUE - this.step < this.value) {
             return WickerConstant.ERROR_CODE;
-        setValue(value + step);
-        return value;
+        }
+        this.value += this.step;
+        return this.value;
     }
 
     //problem of negative is solved by not making any changes and leaving user to reset counter or preform similar action
-    public int decrease() {
-        int tmpValue = value - step;
-        if (tmpValue >= 0)
-            setValue(tmpValue);
+    public double decrease() {
+        double tmpValue = this.value - this.step;
+        if (tmpValue >= 0) {
+            this.value = tmpValue;
+        }
         return tmpValue;
 
     }
@@ -216,8 +220,8 @@ public class Counter implements Serializable {
     public List<String> getCounterDataList() {
         List<String> list = new ArrayList<>();
         list.add(name);
-        list.add(Integer.toString(value));
-        list.add(Integer.toString(step));
+        list.add(Double.toString(value));
+        list.add(Double.toString(step));
         list.add(parseDateTime(CounterDateEnum.COUNTER_CREATED_DATE, true));
         list.add(parseDateTime(CounterDateEnum.COUNTER_MODIFIED_DATE, true));
         list.add(note);

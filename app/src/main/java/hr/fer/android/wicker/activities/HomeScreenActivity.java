@@ -366,7 +366,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                         case 2:
                             return counter1.getName().toLowerCase().compareTo(counter2.getName().toLowerCase());
                         case 3://desc
-                            return counter2.getValue() - counter1.getValue();
+                            return Double.compare(counter2.getValue(), counter1.getValue());
                         default:
                             return -1 * counter1.getDateModified().compareTo(counter2.getDateModified());
                     }

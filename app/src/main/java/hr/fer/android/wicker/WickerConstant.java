@@ -18,7 +18,7 @@ public class WickerConstant {
     public final static String COUNTER_WORKING_STATE_KEY = "working";
     public static final String COUNTER_ORIGINAL_STATE_KEY = "original";
 
-    public final static Long ERROR_CODE_LONG = (long)-1;
+    public final static Long ERROR_CODE_LONG = (long) -1;
 
     //Settings
     public static final String PREF_NOTIFICATION = "pref_notification";
@@ -28,4 +28,7 @@ public class WickerConstant {
 
     //encryption
     public static final String ENCRYPTION_PASSWORD = "Wicker";
+
+    //formatting
+    public static final String DECIMAL_FORMAT = "#,###,###,###.##";
 }
