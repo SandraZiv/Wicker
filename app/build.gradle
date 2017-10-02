@@ -7,14 +7,15 @@ android {
         applicationId "hr.fer.android.wicker"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 20
-        versionName "2.0"
+        versionCode 22
+        versionName "2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled true
+            //this has to be false to generate signed apk
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -29,7 +30,7 @@ dependencies {
     })
 
 
-    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+//    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
     compile group: 'org.jasypt', name: 'jasypt', version: '1.9.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
