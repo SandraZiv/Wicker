@@ -43,7 +43,6 @@
     <string name="decrease">Smanji</string>
     <string name="increase">Uvećaj</string>
     <string name="error_database">Aplikacija prethodno zatvorena, pohranite ručno</string>
-    <string name="data_synced">Podaci ažurirani</string>
     <string name="deleted_counter_single">brojač će biti izbrisan.</string>
     <string name="deleted_counter_multiple">brojača će biti izbrisano.</string>
     <string name="no">Ne</string>

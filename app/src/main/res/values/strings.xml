@@ -43,7 +43,6 @@
     <string name="increase">Increase</string>
     <string name="decrease">Decrease</string>
     <string name="error_database">Database closed, save manually</string>
-    <string name="data_synced">Data updated</string>
     <string name="deleted_counter_single">counter will be deleted.</string>
     <string name="deleted_counter_multiple">counters will be deleted.</string>
     <string name="yes">Yes</string>

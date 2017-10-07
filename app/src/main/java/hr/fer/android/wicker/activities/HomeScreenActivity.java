@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -51,8 +50,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     Menu menu;
 
-    boolean sync = false;
-
     boolean isSearch;
     String query;
 
@@ -60,15 +57,6 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-
-        FloatingActionButton btnSync = (FloatingActionButton) findViewById(R.id.btn_sync);
-        btnSync.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sync = true;
-                updateDataListView();
-            }
-        });
 
         new AsyncGetDataTask().execute("Get data");
     }
@@ -383,11 +371,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                     startActivityForResult(intentLoad, WickerConstant.REQUEST_CODE);
                 }
             });
-
-            if (sync) {
-                Toast.makeText(HomeScreenActivity.this, R.string.data_synced, Toast.LENGTH_SHORT).show();
-                sync = !sync;
-            }
         }
 
     }
