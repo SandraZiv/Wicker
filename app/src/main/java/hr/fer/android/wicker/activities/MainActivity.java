@@ -27,13 +27,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-
 import java.text.DecimalFormat;
 
 import hr.fer.android.wicker.R;
 import hr.fer.android.wicker.WickerConstant;
 import hr.fer.android.wicker.WickerNotificationService;
+import hr.fer.android.wicker.WickerUtils;
 import hr.fer.android.wicker.adapters.InfoListAdapter;
 import hr.fer.android.wicker.adapters.SwipePageAdapter;
 import hr.fer.android.wicker.db.CounterDatabase;
@@ -335,10 +334,10 @@ public class MainActivity extends AppCompatActivity {
                 addNote();
                 break;
             case R.id.export:
-                export();
+                WickerUtils.exportCounter(this, counterWorking);
                 break;
             case R.id.share:
-                share();
+                WickerUtils.shareCounter(this, counterWorking);
                 break;
             case R.id.delete:
                 delete();
@@ -380,33 +379,6 @@ public class MainActivity extends AppCompatActivity {
         builderAddNote.show();
     }
 
-
-    private void export() {
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-
-        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        encryptor.setPassword(WickerConstant.ENCRYPTION_PASSWORD);
-
-        ClipData clip = ClipData.newPlainText(getString(R.string.app_name), encryptor.encrypt(counterWorking.toString()));
-        clipboard.setPrimaryClip(clip);
-        Toast.makeText(MainActivity.this, R.string.export_copied, Toast.LENGTH_LONG).show();
-    }
-
-    /**
-     * Method to create intent for sharing counterWorking's data
-     * It uses extractData() method from {@link Counter} to create string
-     */
-    private void share() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, counterWorking.extractData(MainActivity.this));
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        if (intent.resolveActivity(getPackageManager()) != null)
-            startActivity(Intent.createChooser(intent, getString(R.string.share)));
-        else
-            Toast.makeText(MainActivity.this, R.string.not_supported, Toast.LENGTH_LONG).show();
-
-    }
 
     /**
      * Method to save or update counterWorking data in database

@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -37,6 +38,7 @@ import java.util.regex.Pattern;
 
 import hr.fer.android.wicker.R;
 import hr.fer.android.wicker.WickerConstant;
+import hr.fer.android.wicker.WickerUtils;
 import hr.fer.android.wicker.adapters.HomeScreenListAdapter;
 import hr.fer.android.wicker.db.CounterDatabase;
 import hr.fer.android.wicker.entity.Counter;
@@ -371,8 +373,77 @@ public class HomeScreenActivity extends AppCompatActivity {
                     startActivityForResult(intentLoad, WickerConstant.REQUEST_CODE);
                 }
             });
-        }
 
+            dataListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    final Counter counter = sortedList.get(position);
+
+                    final ArrayAdapter<String> optionAdapter = new ArrayAdapter<>(HomeScreenActivity.this, android.R.layout.simple_list_item_1);
+                    optionAdapter.add(getString(R.string.share));
+                    optionAdapter.add(getString(R.string.export_counter));
+                    optionAdapter.add(getString(R.string.delete));
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity.this);
+                    builder.setTitle(counter.getName());
+                    builder.setAdapter(optionAdapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case 0:
+                                    WickerUtils.shareCounter(HomeScreenActivity.this, counter);
+                                    break;
+                                case 1:
+                                    WickerUtils.exportCounter(HomeScreenActivity.this, counter);
+                                    break;
+                                case 2:
+                                    deleteCounter(counter);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+                    builder.show();
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void deleteCounter(final Counter counter) {
+        AlertDialog.Builder deleteAlert = new AlertDialog.Builder(HomeScreenActivity.this);
+        deleteAlert.setTitle(getString(R.string.delete));
+        deleteAlert.setMessage(getString(R.string.counter) + " " + counter.getName() + " " + getString(R.string.will_be_deleted));
+        deleteAlert.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                new AsyncTask<String, List, Integer>() {
+
+                    @Override
+                    protected Integer doInBackground(String... params) {
+                        CounterDatabase database = new CounterDatabase(HomeScreenActivity.this);
+                        database.deleteCounter(counter);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Integer integer) {
+                        Toast.makeText(HomeScreenActivity.this, R.string.success_delete, Toast.LENGTH_SHORT).show();
+                        NotificationManagerCompat.from(HomeScreenActivity.this).cancel(counter.getId().intValue());
+                        updateDataListView();
+                        dialog.cancel();
+                    }
+                }.execute();
+            }
+        });
+        deleteAlert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        deleteAlert.show();
     }
 
     @Override
