@@ -57,6 +57,7 @@ public class WickerNotificationService extends IntentService {
         builder.setWhen(0);
         builder.setPriority(Notification.PRIORITY_MAX);
 
+        //open task from notification
         Intent resultIntent = new Intent(this, MainActivity.class);
         resultIntent.putExtra(WickerConstant.COUNTER_BUNDLE_KEY, counter);
         PendingIntent resultPendingIntent =
