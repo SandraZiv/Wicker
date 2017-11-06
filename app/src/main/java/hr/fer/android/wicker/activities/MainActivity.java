@@ -364,8 +364,11 @@ public class MainActivity extends AppCompatActivity {
         builderAddNote.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                counterWorking.setNote(noteText.getText().toString().trim());
-                updateInfo();
+                String note = noteText.getText().toString().trim();
+                if (!note.equals(counterWorking.getNote())) {
+                    counterWorking.setNote(note);
+                    updateInfo();
+                }
             }
         });
 
@@ -591,9 +594,11 @@ public class MainActivity extends AppCompatActivity {
                             } else if (newStep == 0) {
                                 Toast.makeText(MainActivity.this, R.string.not_zero_alert, Toast.LENGTH_SHORT).show();
                             } else {
-                                counterWorking.setStep(newStep);
-                                updateOnStepChanged();
-                                updateInfo();
+                                if (newStep != counterWorking.getStep()) {
+                                    counterWorking.setStep(newStep);
+                                    updateOnStepChanged();
+                                    updateInfo();
+                                }
                             }
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
@@ -638,9 +643,11 @@ public class MainActivity extends AppCompatActivity {
                             if (newValue < 0) {
                                 Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
                             } else {
-                                counterWorking.setValue(newValue);
-                                updateOnValueChanged();
-                                updateInfo();
+                                if (newValue != counterWorking.getValue()) {
+                                    counterWorking.setValue(newValue);
+                                    updateOnValueChanged();
+                                    updateInfo();
+                                }
                             }
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
