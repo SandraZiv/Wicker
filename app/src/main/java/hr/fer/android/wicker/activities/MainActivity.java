@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAdd;
     private Button btnSubtract;
     private Button btnReset;
-    private Button btnSetNum;
+    private Button btnSetValue;
     private Button btnSetStep;
 
     private ListView lwInfo;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                           Button add,
                                           Button subtract,
                                           Button reset,
-                                          Button setNum,
+                                          Button setValue,
                                           Button setStep) {
         this.twName = name;
         this.twValue = value;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         this.btnAdd = add;
         this.btnSubtract = subtract;
         this.btnReset = reset;
-        this.btnSetNum = setNum;
+        this.btnSetValue = setValue;
         this.btnSetStep = setStep;
 
         createMainFunctionality();
@@ -148,9 +148,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        twStep.setOnClickListener(new OnStepClickedListener());
+        twValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openModalSetValue();
+            }
+        });
 
-        twValue.setOnClickListener(new OnValueClickedListener());
+        twStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openModalSetStep();
+            }
+        });
+
 
         //settings for add btn
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -193,10 +204,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //setting for set number btn
-        btnSetNum.setOnClickListener(new OnValueClickedListener());
+        btnSetValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openModalSetValue();
+            }
+        });
 
         //settings for twStep btn
-        btnSetStep.setOnClickListener(new OnStepClickedListener());
+        btnSetStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openModalSetStep();
+            }
+        });
     }
 
     /**
@@ -226,6 +247,27 @@ public class MainActivity extends AppCompatActivity {
     public void updateInfo() {
         InfoListAdapter adapter = new InfoListAdapter(this, counterWorking.getCounterDataList());
         lwInfo.setAdapter(adapter);
+
+        lwInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case WickerConstant.INFO_NAME:
+                        break;
+                    case WickerConstant.INFO_VALUE:
+                        openModalSetValue();
+                        break;
+                    case WickerConstant.INFO_STEP:
+                        openModalSetStep();
+                        break;
+                    case WickerConstant.INFO_NOTE:
+                        openModalSetNote();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         lwInfo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -331,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.note:
-                addNote();
+                openModalSetNote();
                 break;
             case R.id.export:
                 WickerUtils.exportCounter(this, counterWorking);
@@ -350,38 +392,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void addNote() {
-        AlertDialog.Builder builderAddNote = new AlertDialog.Builder(this);
-
-        builderAddNote.setTitle(R.string.enter_note);
-
-        final EditText noteText = new EditText(this);
-        noteText.setText(counterWorking.getNote());
-        noteText.setSelection(counterWorking.getNote().length());
-        builderAddNote.setView(noteText);
-
-        builderAddNote.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String note = noteText.getText().toString().trim();
-                if (!note.equals(counterWorking.getNote())) {
-                    counterWorking.setNote(note);
-                    updateInfo();
-                }
-            }
-        });
-
-        builderAddNote.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builderAddNote.show();
-    }
-
 
     /**
      * Method to save or update counterWorking data in database
@@ -567,103 +577,127 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    private class OnStepClickedListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            final AlertDialog.Builder builderSetStep = new AlertDialog.Builder(MainActivity.this);
-            builderSetStep.setTitle(R.string.enter_step);
+    private void openModalSetValue() {
+        AlertDialog.Builder builderSetValue = new AlertDialog.Builder(this);
+        builderSetValue.setTitle(R.string.enter_num);
 
-            final EditText inputNum = new EditText(MainActivity.this);
-            inputNum.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            inputNum.setText(formatting.format(counterWorking.getStep()));
-            inputNum.setSelection(inputNum.getText().toString().length());
-            builderSetStep.setView(inputNum);
+        final EditText etValue = new EditText(MainActivity.this);
+        etValue.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        etValue.setText(counterWorking.getValue() == WickerConstant.DEFAULT_VALUE ? "" : formatting.format(counterWorking.getValue()));
+        etValue.setSelection(etValue.getText().toString().length());
+        builderSetValue.setView(etValue);
 
-            builderSetStep.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String newNum = inputNum.getText().toString();
-                    if (newNum.isEmpty()) {
-                        dialog.cancel();
-                    } else {
-                        double newStep;
-                        try {
-                            newStep = Double.parseDouble(newNum);
-                            if (newStep < 0) {
-                                Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
-                            } else if (newStep == 0) {
-                                Toast.makeText(MainActivity.this, R.string.not_zero_alert, Toast.LENGTH_SHORT).show();
-                            } else {
-                                if (newStep != counterWorking.getStep()) {
-                                    counterWorking.setStep(newStep);
-                                    updateOnStepChanged();
-                                    updateInfo();
-                                }
+        builderSetValue.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String inputValue = etValue.getText().toString();
+                if (inputValue.isEmpty()) {
+                    dialog.cancel();
+                } else {
+                    double newValue;
+                    try {
+                        newValue = Double.parseDouble(inputValue);
+                        if (newValue < 0) {
+                            Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (newValue != counterWorking.getValue()) {
+                                counterWorking.setValue(newValue);
+                                updateOnValueChanged();
+                                updateInfo();
                             }
-                        } catch (Exception e) {
-                            Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
                         }
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
                     }
                 }
-            });
+            }
+        });
 
-            builderSetStep.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+        builderSetValue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
 
-            builderSetStep.show();
-        }
+        builderSetValue.show();
     }
 
-    private class OnValueClickedListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            final AlertDialog.Builder builderSetNum = new AlertDialog.Builder(MainActivity.this);
-            builderSetNum.setTitle(R.string.enter_num);
+    private void openModalSetStep() {
+        AlertDialog.Builder builderSetStep = new AlertDialog.Builder(this);
+        builderSetStep.setTitle(R.string.enter_step);
 
-            final EditText inputNum = new EditText(MainActivity.this);
-            inputNum.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            inputNum.setText(counterWorking.getValue() == WickerConstant.DEFAULT_VALUE ? "" : formatting.format(counterWorking.getValue()));
-            inputNum.setSelection(inputNum.getText().toString().length());
-            builderSetNum.setView(inputNum);
+        final EditText etStep = new EditText(MainActivity.this);
+        etStep.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        etStep.setText(formatting.format(counterWorking.getStep()));
+        etStep.setSelection(etStep.getText().toString().length());
+        builderSetStep.setView(etStep);
 
-            builderSetNum.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String newNum = inputNum.getText().toString();
-                    if (newNum.isEmpty()) {
-                        dialog.cancel();
-                    } else {
-                        double newValue;
-                        try {
-                            newValue = Double.parseDouble(newNum);
-                            if (newValue < 0) {
-                                Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
-                            } else {
-                                if (newValue != counterWorking.getValue()) {
-                                    counterWorking.setValue(newValue);
-                                    updateOnValueChanged();
-                                    updateInfo();
-                                }
+        builderSetStep.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String inputStep = etStep.getText().toString();
+                if (inputStep.isEmpty()) {
+                    dialog.cancel();
+                } else {
+                    double newStep;
+                    try {
+                        newStep = Double.parseDouble(inputStep);
+                        if (newStep < 0) {
+                            Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
+                        } else if (newStep == 0) {
+                            Toast.makeText(MainActivity.this, R.string.not_zero_alert, Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (newStep != counterWorking.getStep()) {
+                                counterWorking.setStep(newStep);
+                                updateOnStepChanged();
+                                updateInfo();
                             }
-                        } catch (Exception e) {
-                            Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
                         }
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
                     }
                 }
-            });
+            }
+        });
 
-            builderSetNum.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
+        builderSetStep.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builderSetStep.show();
+    }
+
+    private void openModalSetNote() {
+        AlertDialog.Builder builderSetNote = new AlertDialog.Builder(this);
+        builderSetNote.setTitle(R.string.enter_note);
+
+        final EditText noteText = new EditText(this);
+        noteText.setText(counterWorking.getNote());
+        noteText.setSelection(counterWorking.getNote().length());
+        builderSetNote.setView(noteText);
+
+        builderSetNote.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String note = noteText.getText().toString().trim();
+                if (!note.equals(counterWorking.getNote())) {
+                    counterWorking.setNote(note);
+                    updateInfo();
                 }
-            });
+            }
+        });
 
-            builderSetNum.show();
-        }
+        builderSetNote.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builderSetNote.show();
     }
 }

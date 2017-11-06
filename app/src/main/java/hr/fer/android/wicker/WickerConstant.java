@@ -31,4 +31,10 @@ public class WickerConstant {
 
     //formatting
     public static final String DECIMAL_FORMAT = "#,###,###,###.##";
+
+    //info indexes
+    public static final int INFO_NAME = 0;
+    public static final int INFO_VALUE = 1;
+    public static final int INFO_STEP = 2;
+    public static final int INFO_NOTE = 5;
 }
