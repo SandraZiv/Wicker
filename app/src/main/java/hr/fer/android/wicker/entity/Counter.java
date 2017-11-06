@@ -167,7 +167,8 @@ public class Counter implements Serializable {
         if (Double.MAX_VALUE - this.step < this.value) {
             return WickerConstant.ERROR_CODE;
         }
-        this.value += this.step;
+        //needs to be setValue because of date update
+        setValue(this.value + this.step);
         return this.value;
     }
 
@@ -175,7 +176,8 @@ public class Counter implements Serializable {
     public double decrease() {
         double tmpValue = this.value - this.step;
         if (tmpValue >= 0) {
-            this.value = tmpValue;
+            //needs to be setValue because of date update
+            setValue(tmpValue);
         }
         return tmpValue;
 
