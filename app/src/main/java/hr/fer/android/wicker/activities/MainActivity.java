@@ -144,21 +144,21 @@ public class MainActivity extends AppCompatActivity {
         twName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddNameAlert(counterWorking);
+                openDialogSetName(counterWorking);
             }
         });
 
         twValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openModalSetValue();
+                openDialogSetValue();
             }
         });
 
         twStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openModalSetStep();
+                openDialogSetStep();
             }
         });
 
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         btnSetValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openModalSetValue();
+                openDialogSetValue();
             }
         });
 
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         btnSetStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openModalSetStep();
+                openDialogSetStep();
             }
         });
     }
@@ -253,15 +253,16 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case WickerConstant.INFO_NAME:
+                        openDialogSetName(counterWorking);
                         break;
                     case WickerConstant.INFO_VALUE:
-                        openModalSetValue();
+                        openDialogSetValue();
                         break;
                     case WickerConstant.INFO_STEP:
-                        openModalSetStep();
+                        openDialogSetStep();
                         break;
                     case WickerConstant.INFO_NOTE:
-                        openModalSetNote();
+                        openDialogSetNote();
                         break;
                     default:
                         break;
@@ -373,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.note:
-                openModalSetNote();
+                openDialogSetNote();
                 break;
             case R.id.export:
                 WickerUtils.exportCounter(this, counterWorking);
@@ -403,51 +404,10 @@ public class MainActivity extends AppCompatActivity {
         }
         //new counterWorking has been created and needs to be saved
         else {
-            openAddNameAlert(counterWorking);
+            openDialogSetName(counterWorking);
         }
     }
 
-    /**
-     * Method is called when brand new counterWorking is created and needs to be saved
-     * or previously saved counter will have its name changed.
-     *
-     * @param counter to be saved in database
-     */
-    private void openAddNameAlert(final Counter counter) {
-        final AlertDialog.Builder builderSaveAs = new AlertDialog.Builder(this);
-        builderSaveAs.setTitle(R.string.enter_name);
-
-        final EditText inputName = new EditText(this);
-        inputName.setInputType(InputType.TYPE_CLASS_TEXT);
-        inputName.setText(counter.getName());
-        inputName.setSelection(counter.getName().length());
-        builderSaveAs.setView(inputName);
-
-        builderSaveAs.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String textName = inputName.getText().toString().trim();
-                if (textName.isEmpty()) {
-                    Toast.makeText(builderSaveAs.getContext(), R.string.please_enter_name, Toast.LENGTH_SHORT).show();
-                } else {
-                    counter.setName(textName);
-                    updateOnNameChanged();
-                    updateInfo();
-                    //if counter is newly created
-                    if (WickerConstant.ERROR_CODE_LONG.equals(counter.getId())) {
-                        saveCounterGeneral(counter);
-                    }
-                }
-            }
-        });
-        builderSaveAs.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builderSaveAs.show();
-    }
 
     /**
      * Method to delete specific counterWorking
@@ -577,7 +537,49 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    private void openModalSetValue() {
+    /**
+     * Method is called when brand new counterWorking is created and needs to be saved
+     * or previously saved counter will have its name changed.
+     *
+     * @param counter to be saved in database
+     */
+    private void openDialogSetName(final Counter counter) {
+        final AlertDialog.Builder builderSaveAs = new AlertDialog.Builder(this);
+        builderSaveAs.setTitle(R.string.enter_name);
+
+        final EditText etName = new EditText(this);
+        etName.setInputType(InputType.TYPE_CLASS_TEXT);
+        etName.setText(counter.getName());
+        etName.setSelection(counter.getName().length());
+        builderSaveAs.setView(etName);
+
+        builderSaveAs.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final String inputName = etName.getText().toString().trim();
+                if (inputName.isEmpty()) {
+                    Toast.makeText(builderSaveAs.getContext(), R.string.please_enter_name, Toast.LENGTH_SHORT).show();
+                } else {
+                    counter.setName(inputName);
+                    updateOnNameChanged();
+                    updateInfo();
+                    //if counter is newly created
+                    if (WickerConstant.ERROR_CODE_LONG.equals(counter.getId())) {
+                        saveCounterGeneral(counter);
+                    }
+                }
+            }
+        });
+        builderSaveAs.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builderSaveAs.show();
+    }
+
+    private void openDialogSetValue() {
         AlertDialog.Builder builderSetValue = new AlertDialog.Builder(this);
         builderSetValue.setTitle(R.string.enter_num);
 
@@ -623,7 +625,7 @@ public class MainActivity extends AppCompatActivity {
         builderSetValue.show();
     }
 
-    private void openModalSetStep() {
+    private void openDialogSetStep() {
         AlertDialog.Builder builderSetStep = new AlertDialog.Builder(this);
         builderSetStep.setTitle(R.string.enter_step);
 
@@ -671,7 +673,7 @@ public class MainActivity extends AppCompatActivity {
         builderSetStep.show();
     }
 
-    private void openModalSetNote() {
+    private void openDialogSetNote() {
         AlertDialog.Builder builderSetNote = new AlertDialog.Builder(this);
         builderSetNote.setTitle(R.string.enter_note);
 
