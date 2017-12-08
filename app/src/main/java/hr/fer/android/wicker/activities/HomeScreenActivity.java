@@ -45,15 +45,17 @@ import hr.fer.android.wicker.entity.Counter;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
-    int numOfCounters;
+    private int numOfCounters;
 
-    ListAdapter dataAdapter;
-    ListView dataListView;
+    private ListAdapter dataAdapter;
+    private ListView dataListView;
 
-    Menu menu;
+    private Menu menu;
 
-    boolean isSearch;
-    String query;
+    private boolean isSearch;
+    private String query;
+
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +160,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private void clearAll() {
         if (numOfCounters == 0) {
-            Toast.makeText(HomeScreenActivity.this, R.string.no_counters_to_delete, Toast.LENGTH_SHORT).show();
+            mToast = WickerUtils.addToast(mToast, HomeScreenActivity.this, R.string.no_counters_to_delete, true);
             return;
         }
         final AlertDialog.Builder deleteAlert = new AlertDialog.Builder(HomeScreenActivity.this);
@@ -240,15 +242,15 @@ public class HomeScreenActivity extends AppCompatActivity {
                                     importUpdateCounter(counter);
                                     return;
                                 }
-                                Toast.makeText(HomeScreenActivity.this, R.string.imported, Toast.LENGTH_SHORT).show();
+                                mToast = WickerUtils.addToast(mToast, HomeScreenActivity.this, R.string.imported, true);
                                 updateDataListView();
                             }
                         }.execute();
                     } else {
-                        Toast.makeText(HomeScreenActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                        mToast = WickerUtils.addToast(mToast, HomeScreenActivity.this, R.string.error, true);
                     }
                 } catch (Exception e) {
-                    Toast.makeText(HomeScreenActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                    mToast = WickerUtils.addToast(mToast, HomeScreenActivity.this, R.string.error, true);
                 }
             }
         });
@@ -288,10 +290,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                             @Override
                             protected void onPostExecute(Long id) {
                                 if (WickerConstant.ERROR_CODE_LONG.equals(id)) {
-                                    Toast.makeText(HomeScreenActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                                    mToast = WickerUtils.addToast(mToast, HomeScreenActivity.this, R.string.error, true);
                                     return;
                                 }
-                                Toast.makeText(HomeScreenActivity.this, R.string.imported, Toast.LENGTH_SHORT).show();
+                                mToast = WickerUtils.addToast(mToast, HomeScreenActivity.this, R.string.imported, true);
                                 updateDataListView();
                             }
                         }.execute();
@@ -429,7 +431,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
                     @Override
                     protected void onPostExecute(Integer integer) {
-                        Toast.makeText(HomeScreenActivity.this, R.string.success_delete, Toast.LENGTH_SHORT).show();
+                        mToast = WickerUtils.addToast(mToast, HomeScreenActivity.this, R.string.success_delete, true);
                         NotificationManagerCompat.from(HomeScreenActivity.this).cancel(counter.getId().intValue());
                         updateDataListView();
                         dialog.cancel();
