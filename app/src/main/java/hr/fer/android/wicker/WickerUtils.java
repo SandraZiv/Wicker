@@ -17,7 +17,7 @@ public class WickerUtils {
      * Method to create intent for sharing counterWorking's data
      * It uses extractData() method from {@link Counter} to create string
      */
-    public static void shareCounter(Context context, Counter counter) {
+    public static void shareCounter(Context context, Counter counter, Toast toast) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, counter.extractData(context));
@@ -25,11 +25,11 @@ public class WickerUtils {
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.share)));
         } else {
-            Toast.makeText(context, R.string.not_supported, Toast.LENGTH_LONG).show();
+            addToast(toast, context, R.string.not_supported, false);
         }
     }
 
-    public static void exportCounter(Context context, Counter counter) {
+    public static Toast exportCounter(Context context, Counter counter, Toast toast) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
@@ -37,7 +37,7 @@ public class WickerUtils {
 
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), encryptor.encrypt(counter.toString()));
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, R.string.export_copied, Toast.LENGTH_LONG).show();
+        return addToast(toast, context, R.string.export_copied, true);
     }
 
     public static Toast addToast(Toast toast, Context context, String msg, boolean isShort) {

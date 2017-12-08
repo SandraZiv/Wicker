@@ -379,10 +379,10 @@ public class MainActivity extends AppCompatActivity {
                 openDialogSetNote();
                 break;
             case R.id.export:
-                WickerUtils.exportCounter(this, counterWorking);
+                mToast = WickerUtils.exportCounter(this, counterWorking, mToast);
                 break;
             case R.id.share:
-                WickerUtils.shareCounter(this, counterWorking);
+                WickerUtils.shareCounter(this, counterWorking, mToast);
                 break;
             case R.id.delete:
                 delete();

@@ -18,6 +18,7 @@ import hr.fer.android.wicker.entity.Counter;
 
 public class WickerNotificationService extends IntentService {
     protected Handler handler;
+    private Toast mToast;
 
     public WickerNotificationService() {
         super(WickerNotificationService.class.getName());
@@ -89,7 +90,7 @@ public class WickerNotificationService extends IntentService {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(WickerNotificationService.this, R.string.success_saved, Toast.LENGTH_LONG).show();
+                mToast = WickerUtils.addToast(mToast, WickerNotificationService.this, R.string.success_saved, true);
             }
         });
     }

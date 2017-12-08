@@ -393,10 +393,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case 0:
-                                    WickerUtils.shareCounter(HomeScreenActivity.this, counter);
+                                    WickerUtils.shareCounter(HomeScreenActivity.this, counter, mToast);
                                     break;
                                 case 1:
-                                    WickerUtils.exportCounter(HomeScreenActivity.this, counter);
+                                    mToast = WickerUtils.exportCounter(HomeScreenActivity.this, counter, mToast);
                                     break;
                                 case 2:
                                     deleteCounter(counter);
