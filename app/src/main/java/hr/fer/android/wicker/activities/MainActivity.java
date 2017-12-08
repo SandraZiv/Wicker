@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView lwInfo;
 
+    private Toast mToast;
+
     private DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
 
     public void setFragmentMainComponents(TextView name,
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 double retValue = counterWorking.increase();
                 //in case of overflow
                 if (retValue == WickerConstant.ERROR_CODE) {
-                    Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_LONG).show();
+                    mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.overflow, true);
                 }
                 updateOnValueChanged();
                 updateInfo();
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 double retValue = counterWorking.decrease();
                 if (retValue < 0) {
-                    Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
+                    mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.positive_alert, true);
                 }
                 updateOnValueChanged();
                 updateInfo();
@@ -199,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 updateOnValueChanged();
                 updateOnStepChanged();
                 updateInfo();
-                Toast.makeText(MainActivity.this, R.string.reset, Toast.LENGTH_SHORT).show();
+                mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.reset, true);
             }
         });
 
@@ -276,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData data = ClipData.newPlainText(getString(R.string.app_name), counterWorking.getCounterDataList().get(position));
                 clipboardManager.setPrimaryClip(data);
-                Toast.makeText(MainActivity.this, R.string.data_copied, Toast.LENGTH_SHORT).show();
+                mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.data_copied, true);
                 return true;
             }
         });
@@ -447,11 +449,11 @@ public class MainActivity extends AppCompatActivity {
             protected void onPostExecute(Long counterId) {
                 //handle unique saving
                 if (WickerConstant.ERROR_CODE_LONG.equals(counterId)) {
-                    Toast.makeText(MainActivity.this, R.string.counter_exists, Toast.LENGTH_SHORT).show();
+                    mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.counter_exists, true);
                     return;
                 }
                 counter.setId(counterId);
-                Toast.makeText(MainActivity.this, R.string.success_saved, Toast.LENGTH_SHORT).show();
+                mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.success_saved, true);
                 updateOnNameChanged();
                 //update original
                 updateOriginal(counter);
@@ -477,11 +479,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Long counterId) {
                 if (WickerConstant.ERROR_CODE_LONG.equals(counterId)) {
-                    Toast.makeText(MainActivity.this, R.string.counter_exists, Toast.LENGTH_SHORT).show();
+                    mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.counter_exists, true);
                     return;
                 }
 
-                Toast.makeText(MainActivity.this, R.string.success_saved, Toast.LENGTH_SHORT).show();
+                mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.success_saved, true);
                 updateInfo();
                 //update original
                 updateOriginal(counter);
@@ -504,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Long retValue) {
-                Toast.makeText(MainActivity.this, R.string.success_delete, Toast.LENGTH_SHORT).show();
+                mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.success_delete, true);
                 NotificationManagerCompat.from(MainActivity.this).cancel(counter.getId().intValue());
                 //generate result ok since back pressed wont be called
                 Intent returnIntent = new Intent();
@@ -558,7 +560,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 final String inputName = etName.getText().toString().trim();
                 if (inputName.isEmpty()) {
-                    Toast.makeText(builderSaveAs.getContext(), R.string.please_enter_name, Toast.LENGTH_SHORT).show();
+                    mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.please_enter_name, true);
                 } else {
                     counter.setName(inputName);
                     updateOnNameChanged();
@@ -600,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         newValue = Double.parseDouble(inputValue);
                         if (newValue < 0) {
-                            Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
+                            mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.positive_alert, true);
                         } else {
                             if (newValue != counterWorking.getValue()) {
                                 counterWorking.setValue(newValue);
@@ -609,7 +611,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     } catch (Exception e) {
-                        Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
+                        mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.overflow, true);
                     }
                 }
             }
@@ -646,9 +648,9 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         newStep = Double.parseDouble(inputStep);
                         if (newStep < 0) {
-                            Toast.makeText(MainActivity.this, R.string.positive_alert, Toast.LENGTH_SHORT).show();
+                            mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.positive_alert, true);
                         } else if (newStep == 0) {
-                            Toast.makeText(MainActivity.this, R.string.not_zero_alert, Toast.LENGTH_SHORT).show();
+                            mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.not_zero_alert, true);
                         } else {
                             if (newStep != counterWorking.getStep()) {
                                 counterWorking.setStep(newStep);
@@ -657,7 +659,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     } catch (Exception e) {
-                        Toast.makeText(MainActivity.this, R.string.overflow, Toast.LENGTH_SHORT).show();
+                        mToast = WickerUtils.addToast(mToast, MainActivity.this, R.string.overflow, true);
                     }
                 }
             }

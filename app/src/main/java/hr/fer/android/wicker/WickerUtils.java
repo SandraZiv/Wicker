@@ -39,4 +39,21 @@ public class WickerUtils {
         clipboard.setPrimaryClip(clip);
         Toast.makeText(context, R.string.export_copied, Toast.LENGTH_LONG).show();
     }
+
+    public static Toast addToast(Toast toast, Context context, String msg, boolean isShort) {
+        if (toast != null) {
+            toast.cancel();
+        }
+
+        toast = Toast.makeText(context, msg, isShort ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG);
+        toast.show();
+
+        return toast;
+    }
+
+    public static Toast addToast(Toast toast, Context context, int id, boolean isShort) {
+        String msg = context.getString(id);
+
+        return addToast(toast, context, msg, isShort);
+    }
 }
