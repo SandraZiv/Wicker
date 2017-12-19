@@ -527,7 +527,8 @@ public class MainActivity extends AppCompatActivity {
     public void createNotification() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (!prefs.getBoolean(WickerConstant.PREF_NOTIFICATION, true)) return;
+        if (!prefs.getBoolean(getString(R.string.pref_notification), getResources().getBoolean(R.bool.pref_notification_default)))
+            return;
 
         //cancel previous notification
         for (Counter tmp : database.getDatabaseCounterListData())

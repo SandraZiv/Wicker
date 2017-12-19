@@ -4,10 +4,10 @@
         android:title="@string/general">
 
         <SwitchPreference
-            android:key="pref_notification"
+            android:key="@string/pref_notification"
             android:title="@string/notifications"
             android:summary="@string/notif_description"
-            android:defaultValue="true"/>
+            android:defaultValue="@bool/pref_notification_default"/>
 
     </PreferenceCategory>
 

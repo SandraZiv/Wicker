@@ -20,9 +20,6 @@ public class WickerConstant {
 
     public final static Long ERROR_CODE_LONG = (long) -1;
 
-    //Settings
-    public static final String PREF_NOTIFICATION = "pref_notification";
-
     public static final String PREFS_ORDER = "OrderBy";
     public static final String ORDER = "order";
 

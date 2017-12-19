@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import hr.fer.android.wicker.R;
-import hr.fer.android.wicker.WickerConstant;
 import hr.fer.android.wicker.db.CounterDatabase;
 import hr.fer.android.wicker.entity.Counter;
 
@@ -47,7 +46,9 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(WickerConstant.PREF_NOTIFICATION) && !sharedPreferences.getBoolean(WickerConstant.PREF_NOTIFICATION, true)) {
+        String prefNotificationKey = getString(R.string.pref_notification);
+        Boolean prefNotificationDefault = getResources().getBoolean(R.bool.pref_notification_default);
+        if (key.equals(prefNotificationKey) && !sharedPreferences.getBoolean(prefNotificationKey, prefNotificationDefault)) {
             //clear notifications
             CounterDatabase database = new CounterDatabase(SettingsActivity.this);
             for (Counter tmp : database.getDatabaseCounterListData())
