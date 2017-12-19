@@ -52,7 +52,7 @@
     <string name="random_welcome_text2">Jednostavan način brojenja onoga što Vam je važno</string>
     <string name="welcome_to_wicker">Dobrodošli na Wicker!</string>
     <string name="general">Općenito</string>
-    <string name="notif_description">Omogući brojenje izvan aplikacije</string>
+    <string name="notif_description">Omogući brojenje preko trake obavijesti</string>
     <string name="notifications">Obavijesti</string>
     <string name="home_screen">Početni zaslon</string>
     <string name="random_welcome_text0_a">Vaš osobni brojač</string>
