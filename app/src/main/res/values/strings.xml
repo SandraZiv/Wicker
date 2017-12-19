@@ -72,6 +72,8 @@
     <string name="exported_copy">Copy exported counter code</string>
     <string name="export_copied">Export code copied to clipboard</string>
     <string name="update_existing">Update existing counter?</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
 
     <string-array name="spinner_order">
         <item>Date Modified</item>
