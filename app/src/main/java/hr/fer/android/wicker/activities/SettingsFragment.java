@@ -1,6 +1,7 @@
 package hr.fer.android.wicker.activities;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.preference.Preference;
@@ -15,6 +16,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
+
+        //set version
+        Preference p = findPreference(getString(R.string.pref_version_key));
+        try {
+            p.setSummary(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
