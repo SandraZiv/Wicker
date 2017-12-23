@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/general">
-
+        <PreferenceScreen app:layout="@layout/preference_helper_layout" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_save_question_default"
             android:key="@string/pref_save_question_key"
             android:summaryOff="@string/pref_save_question_off"
             android:summaryOn="@string/pref_save_question_on"
-            android:title="@string/pref_save_question_title"/>
+            android:title="@string/pref_save_question_title" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/pref_automatic_save_default"
@@ -17,7 +18,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notifications">
-
+        <PreferenceScreen app:layout="@layout/preference_helper_layout" />
         <SwitchPreference
             android:defaultValue="@bool/pref_notification_default"
             android:key="@string/pref_notification_key"
@@ -28,14 +29,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
+        <PreferenceScreen app:layout="@layout/preference_helper_layout" />
         <Preference android:title="@string/pref_view_title">
-            <intent android:action="android.intent.action.VIEW"
-                android:data="@string/google_play_url"/>
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/google_play_url" />
         </Preference>
         <Preference
             android:key="@string/pref_version_key"
             android:summary="@string/pref_version_summary"
-            android:title="@string/pref_version_title"/>
+            android:title="@string/pref_version_title" />
 
     </PreferenceCategory>
 
