@@ -39,7 +39,7 @@ import hr.fer.android.wicker.db.CounterDatabase;
 import hr.fer.android.wicker.entity.Counter;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     CounterDatabase database;
 
     private boolean isFromOnBackPressed;
@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
     private Toast mToast;
 
     private DecimalFormat formatting = new DecimalFormat(WickerConstant.DECIMAL_FORMAT);
+
+    private SharedPreferences preferences;
+    private boolean showSaveAlert;
+    private boolean isAutoSave;
 
     public void setFragmentMainComponents(TextView name,
                                           TextView value,
@@ -93,6 +97,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
+
+        showSaveAlert = preferences.getBoolean(
+                getString(R.string.pref_save_question_key),
+                getResources().getBoolean(R.bool.pref_save_question_default)
+        );
+
+        isAutoSave = preferences.getBoolean(
+                getString(R.string.pref_automatic_save_key),
+                getResources().getBoolean(R.bool.pref_automatic_save_default)
+        );
 
         //in case of for example layout orientation change to preserve data
         if (savedInstanceState != null) {
@@ -133,6 +150,12 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setTitle("");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_home);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        preferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     /**
@@ -289,37 +312,42 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        //if counterWorking has changed since last save or create
+        //if counterWorking has changed since last save or is newly created
         if ((counterWorking.getId() != WickerConstant.ERROR_CODE && !counterWorking.equals(counterOriginal))
                 || (counterWorking.getId() == WickerConstant.ERROR_CODE)) {
-            final AlertDialog.Builder builderBackPressed = new AlertDialog.Builder(MainActivity.this);
-            builderBackPressed.setTitle(R.string.save_changes_alert);
 
-            builderBackPressed.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+            if (!showSaveAlert && isAutoSave) {
+                saveHelper();
+            } else if (!showSaveAlert && !isAutoSave) {
+                dontSaveHelper();
+            } else {
+                final AlertDialog.Builder builderBackPressed = new AlertDialog.Builder(MainActivity.this);
+                builderBackPressed.setTitle(R.string.save_changes_alert);
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    isFromOnBackPressed = true;
-                    saveAs();
-                }
-            });
-            builderBackPressed.setNegativeButton(R.string.dont_save, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //don't create notification for newly created
-                    if (counterWorking.getId() != WickerConstant.ERROR_CODE)
-                        createNotification();
-                    setupForOnBackPressed();
-                }
-            });
-            builderBackPressed.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+                builderBackPressed.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
 
-            builderBackPressed.show();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveHelper();
+                    }
+                });
+                builderBackPressed.setNegativeButton(R.string.dont_save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //don't create notification for newly created
+                        dontSaveHelper();
+                    }
+                });
+                builderBackPressed.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builderBackPressed.show();
+            }
+
         }
         //if counterWorking hasn't been changed since last save
         else {
@@ -327,6 +355,17 @@ public class MainActivity extends AppCompatActivity {
                 createNotification();
             setupForOnBackPressed();
         }
+    }
+
+    private void saveHelper() {
+        isFromOnBackPressed = true;
+        saveAs();
+    }
+
+    private void dontSaveHelper() {
+        if (counterWorking.getId() != WickerConstant.ERROR_CODE)
+            createNotification();
+        setupForOnBackPressed();
     }
 
     /**
@@ -527,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
     public void createNotification() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (!prefs.getBoolean(getString(R.string.pref_notification), getResources().getBoolean(R.bool.pref_notification_default)))
+        if (!prefs.getBoolean(getString(R.string.pref_notification_key), getResources().getBoolean(R.bool.pref_notification_default)))
             return;
 
         //cancel previous notification
@@ -704,5 +743,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         builderSetNote.show();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_save_question_key))) {
+            showSaveAlert = false;
+            //enable auto save preference in preference fragment
+        } else if (key.equals(getString(R.string.pref_automatic_save_key))) {
+            isAutoSave = true;
+        }
     }
 }

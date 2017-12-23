@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/notification_bar">
+    <PreferenceCategory android:title="@string/general">
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_save_question_default"
+            android:key="@string/pref_save_question_key"
+            android:summaryOff="@string/pref_save_question_off"
+            android:summaryOn="@string/pref_save_question_on"
+            android:title="@string/pref_save_question_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_automatic_save_default"
+            android:key="@string/pref_automatic_save_key"
+            android:summary="@string/pref_automatic_save_summary_disabled"
+            android:title="@string/pref_automatic_save_title"
+            android:enabled="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notifications">
 
         <SwitchPreference
             android:defaultValue="@bool/pref_notification_default"
-            android:key="@string/pref_notification"
+            android:key="@string/pref_notification_key"
             android:summaryOff="@string/disabled"
             android:summaryOn="@string/enabled"
             android:title="@string/notif_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
 
     </PreferenceCategory>
 

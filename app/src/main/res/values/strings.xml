@@ -73,8 +73,20 @@
     <string name="exported_copy">Copy exported counter code</string>
     <string name="export_copied">Export code copied to clipboard</string>
     <string name="update_existing">Update existing counter?</string>
-    <string name="enabled">Enabled</string>
-    <string name="disabled">Disabled</string>
+    <string name="enabled">Enabled in notification bar</string>
+    <string name="disabled">Disabled in notification bar</string>
+    <string name="about">About</string>
+
+    <string name="pref_save_question_key" translatable="false">pref_save_question</string>
+    <string name="pref_save_question_title">Show save changes alert</string>
+    <string name="pref_save_question_off">Disabled</string>
+    <string name="pref_save_question_on">Enabled</string>
+
+    <string name="pref_automatic_save_key" translatable="false">pref_automatic_save</string>
+    <string name="pref_automatic_save_title">Auto save</string>
+    <string name="pref_automatic_save_summary_enabled">Save changes automatically before exiting</string>
+    <string name="pref_automatic_save_summary_disabled">Available if save alert is disabled</string>
+
 
     <string-array name="spinner_order">
         <item>Date Modified</item>
@@ -85,6 +97,6 @@
     <string name="random_welcome_text0_b">that makes counting easy and fun!</string>
     <string name="random_welcome_text3">More than just a counter</string>
 
-    <string name="pref_notification" translatable="false">pref_notification</string>
+    <string name="pref_notification_key" translatable="false">pref_notification</string>
 
 </resources>
