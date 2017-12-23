@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 
 import hr.fer.android.wicker.R;
 import hr.fer.android.wicker.db.CounterDatabase;
@@ -16,6 +17,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
+
+        //set auto save
+        setSummary(getPreferenceScreen().getSharedPreferences());
 
         //set version
         Preference p = findPreference(getString(R.string.pref_version_key));
@@ -40,6 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d("Key", key);
         String prefNotificationKey = getString(R.string.pref_notification_key);
         Boolean prefNotificationDefault = getResources().getBoolean(R.bool.pref_notification_default);
         if (key.equals(prefNotificationKey) && !sharedPreferences.getBoolean(prefNotificationKey, prefNotificationDefault)) {
@@ -48,13 +53,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             for (Counter tmp : database.getDatabaseCounterListData())
                 NotificationManagerCompat.from(getContext()).cancel(tmp.getId().intValue());
         } else if (key.equals(getString(R.string.pref_save_question_key))) {
-            Boolean saveAlertEnabled = sharedPreferences.getBoolean(
-                    key, getResources().getBoolean(R.bool.pref_save_question_default));
-            //enable/disable auto save pref
-            Preference p = findPreference(getString(R.string.pref_automatic_save_key));
-            p.setEnabled(!saveAlertEnabled);
-            p.setSummary(getString(!saveAlertEnabled ? R.string.pref_automatic_save_summary_enabled
-                    : R.string.pref_automatic_save_summary_disabled));
+            setSummary(sharedPreferences);
+        } else if (key.equals(getString(R.string.pref_automatic_save_key))) {
+            setSummary(sharedPreferences);
         }
+    }
+
+    private void setSummary(SharedPreferences preferences) {
+        //for auto save
+        String key = getString(R.string.pref_save_question_key);
+        Boolean saveAlertEnabled = preferences.getBoolean(
+                key, getResources().getBoolean(R.bool.pref_save_question_default));
+        //enable/disable auto save pref
+        Preference p = findPreference(getString(R.string.pref_automatic_save_key));
+        Boolean autoSave = preferences.getBoolean(
+                getString(R.string.pref_automatic_save_key),
+                getResources().getBoolean(R.bool.pref_automatic_save_default));
+        String enableMsg = getString(autoSave ? R.string.pref_automatic_save_summary_enabled_on
+                : R.string.pref_automatic_save_summary_enabled_off);
+        p.setEnabled(!saveAlertEnabled);
+        p.setSummary(!saveAlertEnabled ? enableMsg : getString(R.string.pref_automatic_save_summary_disabled));
+
     }
 }

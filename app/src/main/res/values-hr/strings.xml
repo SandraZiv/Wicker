@@ -82,4 +82,14 @@
     <string name="disabled">Onemogućeno</string>
     <string name="enabled">Omogućeno</string>
     <string name="notification_bar">Traka obavijesti</string>
+    <string name="about">O aplikaciji</string>
+    <string name="pref_automatic_save_summary_disabled">Potrebno onemogućiti prikaz upozorenja za spremanje</string>
+    <string name="pref_automatic_save_title">Automatsko spremanje</string>
+    <string name="pref_save_question_off">Onemogućeno</string>
+    <string name="pref_save_question_on">Omogućeno</string>
+    <string name="pref_version_title">Verzija</string>
+    <string name="pref_view_title">Pregled u Trgovina Play</string>
+    <string name="pref_save_question_title">Prkaz upozorenja za spremanje</string>
+    <string name="pref_automatic_save_summary_enabled_off">Onemogućeno automatsko spremanje</string>
+    <string name="pref_automatic_save_summary_enabled_on">Omogućeno automatsko spremanje</string>
 </resources>
