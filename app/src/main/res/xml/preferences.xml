@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/general">
-        <PreferenceScreen app:layout="@layout/preference_helper_layout" />
+        <Preference app:layout="@layout/preference_helper_layout" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_save_question_default"
             android:key="@string/pref_save_question_key"
@@ -18,7 +18,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notifications">
-        <PreferenceScreen app:layout="@layout/preference_helper_layout" />
+        <Preference app:layout="@layout/preference_helper_layout" />
         <SwitchPreference
             android:defaultValue="@bool/pref_notification_default"
             android:key="@string/pref_notification_key"
@@ -29,7 +29,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
-        <PreferenceScreen app:layout="@layout/preference_helper_layout" />
+        <Preference app:layout="@layout/preference_helper_layout" />
         <Preference android:title="@string/pref_view_title">
             <intent
                 android:action="android.intent.action.VIEW"
