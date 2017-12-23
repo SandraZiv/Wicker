@@ -18,16 +18,15 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+        setContentView(R.layout.activity_settings);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         pref.registerOnSharedPreferenceChangeListener(this);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.settings));
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_home);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
