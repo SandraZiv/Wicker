@@ -122,23 +122,22 @@ public class HomeScreenActivity extends AppCompatActivity {
             case R.id.home_new:
                 Intent intentNew = new Intent(HomeScreenActivity.this, MainActivity.class);
                 startActivityForResult(intentNew, WickerConstant.REQUEST_CODE);
-                break;
+                return true;
             case R.id.home_order:
                 orderBy();
-                break;
+                return true;
             case R.id.home_clear_all:
                 clearAll();
-                break;
+                return true;
             case R.id.home_import:
                 importAddCounter();
-                break;
+                return true;
             case R.id.home_settings:
                 startActivity(new Intent(HomeScreenActivity.this, SettingsActivity.class));
-                break;
+                return true;
             default:
-                break;
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void orderBy() {

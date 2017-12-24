@@ -17,7 +17,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -397,8 +396,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -413,26 +411,25 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                break;
+                return true;
             case R.id.note:
                 openDialogSetNote();
-                break;
+                return true;
             case R.id.export:
                 mToast = WickerUtils.exportCounter(this, counterWorking, mToast);
-                break;
+                return true;
             case R.id.share:
                 WickerUtils.shareCounter(this, counterWorking, mToast);
-                break;
+                return true;
             case R.id.delete:
                 delete();
-                break;
+                return true;
             case R.id.save_as:
                 saveAs();
-                break;
+                return true;
             default:
-                break;
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
