@@ -55,7 +55,7 @@
 
     <string name="general">General</string>
     <string name="home_screen">Home screen</string>
-    <string name="notif_title">Counter Preview</string>
+    <string name="notif_title">Counter preview</string>
     <string name="notification_bar">Notification Bar</string>
     <string name="notifications">Notifications</string>
     <string name="random_welcome_text1">Keep counting the moments</string>
@@ -106,5 +106,6 @@
     <string name="random_welcome_text3">More than just a counter</string>
 
     <string name="pref_notification_key" translatable="false">pref_notification</string>
+    <string name="reset_preferences">Reset preferences</string>
 
 </resources>

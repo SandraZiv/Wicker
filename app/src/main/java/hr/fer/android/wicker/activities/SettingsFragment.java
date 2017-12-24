@@ -11,12 +11,15 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import hr.fer.android.wicker.R;
+import hr.fer.android.wicker.WickerUtils;
 import hr.fer.android.wicker.db.CounterDatabase;
 import hr.fer.android.wicker.entity.Counter;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private Toast mToast;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -69,6 +72,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         SwitchPreference pNotification = (SwitchPreference) findPreference(getString(R.string.pref_notification_key));
         pNotification.setChecked(getResources().getBoolean(R.bool.pref_notification_default));
+
+        mToast = WickerUtils.addToast(mToast, getContext(), getString(R.string.reset_preferences), true);
     }
 
     @Override
