@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (counterWorking.getId() != WickerConstant.ERROR_CODE)
             NotificationManagerCompat.from(this).cancel(counterWorking.getId().intValue());
 
+        //part for swipe and fragments
         SwipePageAdapter swipePageAdapter = new SwipePageAdapter(getSupportFragmentManager(), this);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.container_fragment);
@@ -145,10 +146,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
         tabLayout.setupWithViewPager(viewPager);
 
+        //action bar setup
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_home);
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
