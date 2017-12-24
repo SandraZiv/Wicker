@@ -358,7 +358,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private void saveHelper() {
         isFromOnBackPressed = true;
-        saveAs();
+        if (counterWorking.getId() != WickerConstant.ERROR_CODE) {
+            saveAs();
+        } else {
+            setupForOnBackPressed();
+        }
     }
 
     private void dontSaveHelper() {
