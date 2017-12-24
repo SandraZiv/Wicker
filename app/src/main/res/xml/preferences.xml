@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/general">
-        <Preference app:layout="@layout/preference_helper_layout" />
+        <Preference app:layout="@layout/preference_helper_layout_top" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_save_question_default"
             android:key="@string/pref_save_question_key"
@@ -15,21 +15,25 @@
             android:key="@string/pref_automatic_save_key"
             android:title="@string/pref_automatic_save_title" />
 
+        <Preference app:layout="@layout/preference_helper_layout_bottom" />
+
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notifications">
-        <Preference app:layout="@layout/preference_helper_layout" />
+        <Preference app:layout="@layout/preference_helper_layout_top" />
         <SwitchPreference
             android:defaultValue="@bool/pref_notification_default"
             android:key="@string/pref_notification_key"
             android:summaryOff="@string/disabled"
             android:summaryOn="@string/enabled"
             android:title="@string/notif_title" />
+        <Preference app:layout="@layout/preference_helper_layout_bottom" />
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
-        <Preference app:layout="@layout/preference_helper_layout" />
+        <Preference app:layout="@layout/preference_helper_layout_top" />
         <Preference android:title="@string/pref_view_title">
             <intent
                 android:action="android.intent.action.VIEW"
