@@ -16,7 +16,7 @@ import hr.fer.android.wicker.R;
  * Class that represents fragment for swipe implementation
  */
 public class MainFragment extends Fragment {
-    //not included in WIckerConstant
+    //not included in WickerConstant
     private final static String PAGE_NUMBER_KEY = "page_number";
 
     View rootView;
