@@ -3,10 +3,14 @@ package hr.fer.android.wicker.activities;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import hr.fer.android.wicker.R;
 import hr.fer.android.wicker.db.CounterDatabase;
@@ -18,6 +22,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
 
+        setHasOptionsMenu(true);
+
         //set auto save
         setSummary(getPreferenceScreen().getSharedPreferences());
 
@@ -28,6 +34,41 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.settings_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_reset:
+                resetSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void resetSettings() {
+        SharedPreferences preferences = getPreferenceScreen().getSharedPreferences();
+
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.clear();
+        editor.apply();
+
+        CheckBoxPreference pSaveQuestion = (CheckBoxPreference) findPreference(getString(R.string.pref_save_question_key));
+        pSaveQuestion.setChecked(getResources().getBoolean(R.bool.pref_save_question_default));
+
+        CheckBoxPreference pAutoSave = (CheckBoxPreference) findPreference(getString(R.string.pref_automatic_save_key));
+        pAutoSave.setChecked(getResources().getBoolean(R.bool.pref_automatic_save_default));
+
+        SwitchPreference pNotification = (SwitchPreference) findPreference(getString(R.string.pref_notification_key));
+        pNotification.setChecked(getResources().getBoolean(R.bool.pref_notification_default));
     }
 
     @Override
@@ -44,7 +85,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d("Key", key);
         String prefNotificationKey = getString(R.string.pref_notification_key);
         Boolean prefNotificationDefault = getResources().getBoolean(R.bool.pref_notification_default);
         if (key.equals(prefNotificationKey) && !sharedPreferences.getBoolean(prefNotificationKey, prefNotificationDefault)) {
@@ -73,6 +113,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 : R.string.pref_automatic_save_summary_enabled_off);
         p.setEnabled(!saveAlertEnabled);
         p.setSummary(!saveAlertEnabled ? enableMsg : getString(R.string.pref_automatic_save_summary_disabled));
-
     }
+
 }
