@@ -1,7 +1,10 @@
 package hr.fer.android.wicker.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v4.app.NotificationManagerCompat;
@@ -30,10 +33,25 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         //set auto save
         setSummary(getPreferenceScreen().getSharedPreferences());
 
+        //open in google play
+        Preference pGooglePlay = findPreference(getString(R.string.pref_google_play_key));
+        pGooglePlay.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                final String appPackageName = getContext().getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_play_market) + appPackageName)));
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_play_url) + appPackageName)));
+                }
+                return true;
+            }
+        });
+
         //set version
-        Preference p = findPreference(getString(R.string.pref_version_key));
+        Preference pVersion = findPreference(getString(R.string.pref_version_key));
         try {
-            p.setSummary(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName);
+            pVersion.setSummary(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
