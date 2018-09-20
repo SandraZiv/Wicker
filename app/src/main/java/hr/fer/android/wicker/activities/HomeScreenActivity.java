@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -55,10 +56,21 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private Toast mToast;
 
+    private FloatingActionButton fabAddCounter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        fabAddCounter = findViewById(R.id.fabAddCounter);
+        fabAddCounter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentNew = new Intent(HomeScreenActivity.this, MainActivity.class);
+                startActivityForResult(intentNew, WickerConstant.REQUEST_CODE);
+            }
+        });
 
         updateDataListView();
     }
@@ -68,11 +80,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             isSearch = true;
             query = intent.getExtras().getString(SearchManager.QUERY).toLowerCase().trim();
-            menu.setGroupVisible(R.id.home_group_in_search_shown, false);
+            hideItems();
         }
         if (Intent.ACTION_DEFAULT.equals(intent.getAction())) {
             isSearch = false;
-            menu.setGroupVisible(R.id.home_group_in_search_shown, true);
+            showItems();
         }
         updateDataListView();
     }
@@ -113,6 +125,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         menu.findItem(R.id.home_search).setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                hideItems();
                 return true;
             }
 
@@ -129,13 +142,19 @@ public class HomeScreenActivity extends AppCompatActivity {
         return true;
     }
 
+    private void showItems() {
+        menu.setGroupVisible(R.id.home_group_in_search_shown, true);
+        fabAddCounter.setVisibility(View.VISIBLE);
+    }
+
+    private void hideItems() {
+        menu.setGroupVisible(R.id.home_group_in_search_shown, false);
+        fabAddCounter.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home_new:
-                Intent intentNew = new Intent(HomeScreenActivity.this, MainActivity.class);
-                startActivityForResult(intentNew, WickerConstant.REQUEST_CODE);
-                return true;
             case R.id.home_order:
                 orderBy();
                 return true;
