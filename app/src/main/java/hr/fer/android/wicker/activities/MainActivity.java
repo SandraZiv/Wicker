@@ -140,10 +140,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //part for swipe and fragments
         SwipePageAdapter swipePageAdapter = new SwipePageAdapter(getSupportFragmentManager(), this);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container_fragment);
+        ViewPager viewPager = findViewById(R.id.container_fragment);
         viewPager.setAdapter(swipePageAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
+        TabLayout tabLayout = findViewById(R.id.tab);
         tabLayout.setupWithViewPager(viewPager);
 
         //action bar setup
