@@ -8,14 +8,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -62,7 +60,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        new AsyncGetDataTask().execute("Get data");
+        updateDataListView();
     }
 
     @Override
@@ -88,16 +86,31 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.home_menu_no_login, menu);
+        getMenuInflater().inflate(R.menu.home_menu_no_login, menu);
 
         this.menu = menu;
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.home_search).getActionView();
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.home_search), new MenuItemCompat.OnActionExpandListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                isSearch = true;
+                query = newText;
+                updateDataListView();
+                return true;
+            }
+        });
+
+        menu.findItem(R.id.home_search).setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 return true;
@@ -329,9 +342,9 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
 
             dataAdapter = new HomeScreenListAdapter(HomeScreenActivity.this, finalData);
-            dataListView = (ListView) findViewById(R.id.home_screen_list);
+            dataListView = findViewById(R.id.home_screen_list);
 
-            TextView emptyTextView1 = (TextView) findViewById(R.id.home_screen_tw_empty);
+            TextView emptyTextView1 = findViewById(R.id.home_screen_tw_empty);
             String[] emptyText = {getString(R.string.random_welcome_text0_a) + '\n' + getString(R.string.random_welcome_text0_b),
                     getString(R.string.random_welcome_text1),
                     getString(R.string.random_welcome_text2),

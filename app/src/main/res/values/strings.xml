@@ -89,7 +89,7 @@
     <string name="pref_automatic_save_summary_disabled">Available if save alert is disabled</string>
 
     <string name="pref_google_play_key" translatable="false">pref_google_play</string>
-    <string name="pref_view_title">View in Google Play</string>
+    <string name="pref_view_title">View on Google Play</string>
     <string name="google_play_market" translatable="false">market://details?id=</string>
     <string name="google_play_url" translatable="false">https://play.google.com/store/apps/details?id=</string>
 
