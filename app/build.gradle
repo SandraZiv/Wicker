@@ -7,8 +7,8 @@ android {
         applicationId "hr.fer.android.wicker"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 22
-        versionName "2.1"
+        versionCode 35
+        versionName "2.6.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
