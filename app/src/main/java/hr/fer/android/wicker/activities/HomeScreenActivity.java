@@ -63,6 +63,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+        dataListView = findViewById(R.id.home_screen_list);
+        setEmptyViewRandomText();
+
         fabAddCounter = findViewById(R.id.fabAddCounter);
         fabAddCounter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +173,17 @@ public class HomeScreenActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setEmptyViewRandomText() {
+        TextView emptyTextView1 = findViewById(R.id.home_screen_tw_empty);
+        String[] emptyText = {getString(R.string.random_welcome_text0_a) + '\n' + getString(R.string.random_welcome_text0_b),
+                getString(R.string.random_welcome_text1),
+                getString(R.string.random_welcome_text2),
+                getString(R.string.random_welcome_text3)};
+        Random rand = new Random();
+        emptyTextView1.setText(emptyText[rand.nextInt(4)]);
+        dataListView.setEmptyView(findViewById(R.id.home_screen_empty_view));
     }
 
     private void orderBy() {
@@ -361,16 +375,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
 
             dataAdapter = new HomeScreenListAdapter(HomeScreenActivity.this, finalData);
-            dataListView = findViewById(R.id.home_screen_list);
-
-            TextView emptyTextView1 = findViewById(R.id.home_screen_tw_empty);
-            String[] emptyText = {getString(R.string.random_welcome_text0_a) + '\n' + getString(R.string.random_welcome_text0_b),
-                    getString(R.string.random_welcome_text1),
-                    getString(R.string.random_welcome_text2),
-                    getString(R.string.random_welcome_text3)};
-            Random rand = new Random();
-            emptyTextView1.setText(emptyText[rand.nextInt(4)]);
-            dataListView.setEmptyView(findViewById(R.id.home_screen_empty_view));
 
             dataListView.setAdapter(dataAdapter);
 
@@ -486,6 +490,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 updateDataListView();
             }
         }
+        setEmptyViewRandomText();
     }
 
     public void updateDataListView() {
