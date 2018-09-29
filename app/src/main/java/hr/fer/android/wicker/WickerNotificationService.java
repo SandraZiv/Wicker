@@ -2,11 +2,15 @@ package hr.fer.android.wicker;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
@@ -23,6 +27,24 @@ public class WickerNotificationService extends IntentService {
     public WickerNotificationService() {
         super(WickerNotificationService.class.getName());
         handler = new Handler();
+    }
+
+    private static final int NOTIFICATION_ID = 304;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(NOTIFICATION_ID, getEmptyNotification());
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        }
     }
 
     @Override
@@ -45,8 +67,20 @@ public class WickerNotificationService extends IntentService {
         }
     }
 
+    private static final String WICKER_CHANNEL_ID = "WICKER_CHANNEL_ID";
+
     protected void updateNotification(Counter counter) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, WICKER_CHANNEL_ID);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    WICKER_CHANNEL_ID,
+                    getString(R.string.notifications),
+                    NotificationManager.IMPORTANCE_HIGH);
+            manager.createNotificationChannel(mChannel);
+        }
+
         builder.setAutoCancel(true);
         builder.setContentTitle(getString(R.string.app_name));
 
@@ -81,10 +115,30 @@ public class WickerNotificationService extends IntentService {
         PendingIntent savePendingIntent = PendingIntent.getService(this, 101, saveIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.addAction(new NotificationCompat.Action(R.drawable.ic_save_btn, getString(R.string.save), savePendingIntent));
 
-        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
-        manager.notify(counter.getId().intValue(), builder.build());
+        Notification notification = builder.build();
+        manager.notify(counter.getId().intValue(), notification);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Notification getEmptyNotification() {
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationChannel mChannel = new NotificationChannel(
+                WICKER_CHANNEL_ID,
+                getString(R.string.notifications),
+                NotificationManager.IMPORTANCE_NONE
+        );
+        manager.createNotificationChannel(mChannel);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, WICKER_CHANNEL_ID);
+
+        builder.setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.random_welcome_text2))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true);
+
+        return builder.build();
+    }
 
     private void showToast() {
         handler.post(new Runnable() {
