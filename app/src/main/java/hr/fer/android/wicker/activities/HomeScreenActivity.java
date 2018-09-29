@@ -7,15 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,12 +56,26 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private Toast mToast;
 
+    private FloatingActionButton fabAddCounter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        new AsyncGetDataTask().execute("Get data");
+        dataListView = findViewById(R.id.home_screen_list);
+        setEmptyViewRandomText();
+
+        fabAddCounter = findViewById(R.id.fabAddCounter);
+        fabAddCounter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentNew = new Intent(HomeScreenActivity.this, MainActivity.class);
+                startActivityForResult(intentNew, WickerConstant.REQUEST_CODE);
+            }
+        });
+
+        updateDataListView();
     }
 
     @Override
@@ -70,11 +83,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             isSearch = true;
             query = intent.getExtras().getString(SearchManager.QUERY).toLowerCase().trim();
-            menu.setGroupVisible(R.id.home_group_in_search_shown, false);
+            hideItems();
         }
         if (Intent.ACTION_DEFAULT.equals(intent.getAction())) {
             isSearch = false;
-            menu.setGroupVisible(R.id.home_group_in_search_shown, true);
+            showItems();
         }
         updateDataListView();
     }
@@ -88,18 +101,34 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.home_menu_no_login, menu);
+        getMenuInflater().inflate(R.menu.home_menu_no_login, menu);
 
         this.menu = menu;
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.home_search).getActionView();
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.home_search), new MenuItemCompat.OnActionExpandListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                isSearch = true;
+                query = newText;
+                updateDataListView();
+                return true;
+            }
+        });
+
+        menu.findItem(R.id.home_search).setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                hideItems();
                 return true;
             }
 
@@ -116,13 +145,19 @@ public class HomeScreenActivity extends AppCompatActivity {
         return true;
     }
 
+    private void showItems() {
+        menu.setGroupVisible(R.id.home_group_in_search_shown, true);
+        fabAddCounter.setVisibility(View.VISIBLE);
+    }
+
+    private void hideItems() {
+        menu.setGroupVisible(R.id.home_group_in_search_shown, false);
+        fabAddCounter.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home_new:
-                Intent intentNew = new Intent(HomeScreenActivity.this, MainActivity.class);
-                startActivityForResult(intentNew, WickerConstant.REQUEST_CODE);
-                return true;
             case R.id.home_order:
                 orderBy();
                 return true;
@@ -138,6 +173,17 @@ public class HomeScreenActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setEmptyViewRandomText() {
+        TextView emptyTextView1 = findViewById(R.id.home_screen_tw_empty);
+        String[] emptyText = {getString(R.string.random_welcome_text0_a) + '\n' + getString(R.string.random_welcome_text0_b),
+                getString(R.string.random_welcome_text1),
+                getString(R.string.random_welcome_text2),
+                getString(R.string.random_welcome_text3)};
+        Random rand = new Random();
+        emptyTextView1.setText(emptyText[rand.nextInt(4)]);
+        dataListView.setEmptyView(findViewById(R.id.home_screen_empty_view));
     }
 
     private void orderBy() {
@@ -329,16 +375,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
 
             dataAdapter = new HomeScreenListAdapter(HomeScreenActivity.this, finalData);
-            dataListView = (ListView) findViewById(R.id.home_screen_list);
-
-            TextView emptyTextView1 = (TextView) findViewById(R.id.home_screen_tw_empty);
-            String[] emptyText = {getString(R.string.random_welcome_text0_a) + '\n' + getString(R.string.random_welcome_text0_b),
-                    getString(R.string.random_welcome_text1),
-                    getString(R.string.random_welcome_text2),
-                    getString(R.string.random_welcome_text3)};
-            Random rand = new Random();
-            emptyTextView1.setText(emptyText[rand.nextInt(4)]);
-            dataListView.setEmptyView(findViewById(R.id.home_screen_empty_view));
 
             dataListView.setAdapter(dataAdapter);
 
@@ -454,6 +490,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 updateDataListView();
             }
         }
+        setEmptyViewRandomText();
     }
 
     public void updateDataListView() {

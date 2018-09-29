@@ -10,12 +10,6 @@
         app:showAsAction="collapseActionView|always"/>
 
     <item
-        android:id="@+id/home_new"
-        android:icon="@drawable/ic_new"
-        android:title="@string/new_data"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/home_order"
         android:title="@string/order_by"/>
 
