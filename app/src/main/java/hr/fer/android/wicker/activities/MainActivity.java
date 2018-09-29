@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         //action bar setup
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -360,7 +361,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private void saveHelper() {
         isFromOnBackPressed = true;
-        if (counterWorking.getId() != WickerConstant.ERROR_CODE) {
+        //
+        if (isNewCounterChanged()) {
             saveAs();
         } else {
             setupForOnBackPressed();
@@ -371,6 +373,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (counterWorking.getId() != WickerConstant.ERROR_CODE)
             createNotification();
         setupForOnBackPressed();
+    }
+
+    private boolean isNewCounterChanged() {
+        return !(counterWorking.getId() == WickerConstant.ERROR_CODE
+                && counterWorking.getStep() == WickerConstant.DEFAULT_STEP
+                && counterWorking.getValue() == WickerConstant.DEFAULT_VALUE
+                && counterWorking.getName().trim().isEmpty()
+                && counterWorking.getNote().trim().isEmpty());
     }
 
     /**
@@ -579,7 +589,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         Intent intent = new Intent(this, WickerNotificationService.class);
         intent.putExtra(WickerConstant.COUNTER_BUNDLE_KEY, counterOriginal);
-        startService(intent);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            startService(intent);
+        } else {
+            startForegroundService(intent);
+        }
     }
 
     /**
