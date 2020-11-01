@@ -9,8 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
+import androidx.core.app.NotificationCompat;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
@@ -51,6 +52,10 @@ public class WickerNotificationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String action = intent.getAction();
         Counter counter = (Counter) intent.getExtras().getSerializable(WickerConstant.COUNTER_BUNDLE_KEY);
+        if (counter == null) {
+            showToast(R.string.error);
+        }
+
         if (action == null) {
             updateNotification(counter);
         } else if (action.equals(WickerConstant.INCREASE)) {
@@ -63,7 +68,7 @@ public class WickerNotificationService extends IntentService {
             CounterDatabase db = new CounterDatabase(this);
             db.updateCounter(counter); //TODO
             updateNotification(counter);
-            showToast();
+            showToast(R.string.success_saved);
         }
     }
 
@@ -140,11 +145,11 @@ public class WickerNotificationService extends IntentService {
         return builder.build();
     }
 
-    private void showToast() {
+    private void showToast(@StringRes final int messageId) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                mToast = WickerUtils.addToast(mToast, WickerNotificationService.this, R.string.success_saved, true);
+                mToast = WickerUtils.addToast(mToast, WickerNotificationService.this, messageId, true);
             }
         });
     }
